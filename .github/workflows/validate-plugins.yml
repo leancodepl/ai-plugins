@@ -1,0 +1,27 @@
+name: Validate plugins
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Structure checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test Go tooling
+        run: go test ./...
+
+      - name: Validate plugin structure
+        run: go run ./cmd/validate-plugins

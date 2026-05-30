@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-cubit-utils",
+  "displayName": "Flutter Cubit Utils",
+  "description": "LeanCode cubit-utils base classes (QueryCubit, PaginatedQueryCubit, RequestCubit) and canonical cubit recipes for lists, details, and actions.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "cubit",
+    "leancode_cubit_utils",
+    "query-cubit",
+    "pagination"
+  ],
+  "skills": "./skills/"
+}

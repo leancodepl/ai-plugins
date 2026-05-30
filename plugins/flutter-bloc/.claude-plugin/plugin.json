@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-bloc",
+  "displayName": "Flutter BLoC",
+  "description": "LeanCode Flutter BLoC guidance for state management, cubit patterns, and presentation side effects.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "bloc",
+    "cubit",
+    "state-management",
+    "flutter_bloc"
+  ],
+  "skills": "./skills/"
+}

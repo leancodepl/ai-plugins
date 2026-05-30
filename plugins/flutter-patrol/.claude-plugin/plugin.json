@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-patrol",
+  "displayName": "Flutter Patrol",
+  "description": "LeanCode Patrol E2E testing guidance (Modules/System/ApiClients, keys conventions) plus Patrol MCP setup for AI-assisted test development.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "patrol",
+    "e2e-testing",
+    "automation",
+    "mcp"
+  ],
+  "skills": "./skills/"
+}

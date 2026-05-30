@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "leancode-ai-plugins",
+  "owner": {
+    "name": "LeanCode"
+  },
+  "metadata": {
+    "description": "LeanCode's Claude Code plugins for Flutter development.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "lean-core",
+      "source": "./plugins/lean-core",
+      "description": "Entry point for the LeanCode AI plugins marketplace. Explains what's available and helps contributors open PRs to add or improve plugins.",
+      "skills": [
+        "./skills/lean-core-usage",
+        "./skills/lean-contribute"
+      ]
+    },
+    {
+      "name": "flutter-localization",
+      "source": "./plugins/flutter-localization",
+      "description": "LeanCode Flutter localization guidance for ARB, POEditor, and l10n(context) workflows.",
+      "skills": [
+        "./skills/flutter-localization-usage",
+        "./skills/poe2arb-workflow"
+      ]
+    },
+    {
+      "name": "flutter-leancode-architecture",
+      "source": "./plugins/flutter-leancode-architecture",
+      "description": "LeanCode Flutter architecture standards for project structure, error handling, and logging.",
+      "skills": [
+        "./skills/flutter-leancode-architecture-usage",
+        "./skills/review-leancode-arch",
+        "./skills/scaffold-feature"
+      ]
+    },
+    {
+      "name": "flutter-di",
+      "source": "./plugins/flutter-di",
+      "description": "LeanCode Flutter dependency injection guidance using the provider package (page-scoped and global providers, AsyncLoader).",
+      "skills": [
+        "./skills/flutter-di-usage"
+      ]
+    },
+    {
+      "name": "flutter-navigation",
+      "source": "./plugins/flutter-navigation",
+      "description": "LeanCode Flutter navigation guidance for auto_route and go_router with typed routes, route organization, guards, shells, and deep links.",
+      "skills": [
+        "./skills/flutter-navigation-usage"
+      ]
+    },
+    {
+      "name": "flutter-analytics",
+      "source": "./plugins/flutter-analytics",
+      "description": "LeanCode Flutter analytics guidance for feature-level IDs, page tracking, clickable elements, and analytics review/scaffolding workflows.",
+      "skills": [
+        "./skills/flutter-analytics-usage",
+        "./skills/review-analytics-coverage",
+        "./skills/scaffold-analytics-ids"
+      ]
+    },
+    {
+      "name": "flutter-bloc",
+      "source": "./plugins/flutter-bloc",
+      "description": "LeanCode Flutter BLoC guidance for state management, cubit patterns, and presentation side effects.",
+      "skills": [
+        "./skills/flutter-bloc-usage",
+        "./skills/flutter-context-watch-instead-of-top-builder"
+      ]
+    },
+    {
+      "name": "flutter-cubit-utils",
+      "source": "./plugins/flutter-cubit-utils",
+      "description": "LeanCode cubit-utils base classes (QueryCubit, PaginatedQueryCubit, RequestCubit) and canonical cubit recipes for lists, details, and actions.",
+      "skills": [
+        "./skills/flutter-cubit-utils-usage"
+      ]
+    },
+    {
+      "name": "flutter-forms",
+      "source": "./plugins/flutter-forms",
+      "description": "LeanCode Flutter forms guidance based on leancode_forms, form cubits, and validation behavior.",
+      "skills": [
+        "./skills/flutter-forms-usage"
+      ]
+    },
+    {
+      "name": "flutter-cqrs",
+      "source": "./plugins/flutter-cqrs",
+      "description": "LeanCode Flutter CQRS guidance for contracts, data-access patterns, and client-side command/query usage.",
+      "skills": [
+        "./skills/flutter-cqrs-usage",
+        "./skills/data-access"
+      ]
+    },
+    {
+      "name": "flutter-ui",
+      "source": "./plugins/flutter-ui",
+      "description": "LeanCode Flutter UI guidance for Figma-driven implementation and design-system usage.",
+      "skills": [
+        "./skills/flutter-ui-usage",
+        "./skills/ui"
+      ]
+    },
+    {
+      "name": "flutter-patrol",
+      "source": "./plugins/flutter-patrol",
+      "description": "LeanCode Patrol E2E testing guidance (Modules/System/ApiClients, keys conventions) plus Patrol MCP setup for AI-assisted test development.",
+      "skills": [
+        "./skills/flutter-patrol-usage"
+      ]
+    },
+    {
+      "name": "flutter-marionette",
+      "source": "./plugins/flutter-marionette",
+      "description": "LeanCode Marionette MCP setup and usage — runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging.",
+      "skills": [
+        "./skills/flutter-marionette-usage"
+      ]
+    }
+  ]
+}

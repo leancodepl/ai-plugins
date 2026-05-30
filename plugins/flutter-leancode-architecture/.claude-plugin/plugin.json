@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-leancode-architecture",
+  "displayName": "Flutter LeanCode Architecture",
+  "description": "LeanCode Flutter architecture standards for project structure, error handling, and logging.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "architecture",
+    "leancode",
+    "project-structure",
+    "error-handling",
+    "logging"
+  ],
+  "skills": "./skills/"
+}

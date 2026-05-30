@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-forms",
+  "displayName": "Flutter Forms",
+  "description": "LeanCode Flutter forms guidance based on leancode_forms, form cubits, and validation behavior.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "forms",
+    "leancode_forms",
+    "cubit",
+    "validation"
+  ],
+  "skills": "./skills/"
+}

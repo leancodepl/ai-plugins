@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-ui",
+  "displayName": "Flutter UI",
+  "description": "LeanCode Flutter UI guidance for Figma-driven implementation and design-system usage.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "ui",
+    "design-system",
+    "presentation-layer",
+    "widgets"
+  ],
+  "skills": "./skills/"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-localization",
+  "displayName": "Flutter Localization",
+  "description": "LeanCode Flutter localization guidance for ARB, POEditor, and l10n(context) workflows.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "localization",
+    "l10n",
+    "poeditor",
+    "arb"
+  ],
+  "skills": "./skills/"
+}
