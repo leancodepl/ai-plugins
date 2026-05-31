@@ -8,7 +8,7 @@ LeanCode's shared AI plugins for Claude Code, focused on Flutter development.
 
 - `.claude-plugin/` holds the Claude Code marketplace metadata.
 - `plugins/<plugin-name>/` contains one self-contained plugin.
-- Each plugin contains `skills/`, optionally `agents/` (every `flutter-*` plugin ships one), and optionally `.mcp.json` if it drives an MCP server.
+- Each plugin contains `skills/`, optionally `agents/` (most `flutter-*` plugins ship one), and optionally `.mcp.json` if it drives an MCP server.
 - Each plugin should have its own `README.md` describing scope and assets.
 
 Claude Code also documents support for per-plugin `commands/` and `hooks/` directories. No plugin in this repo currently uses them — treat them as not-yet-exercised.
@@ -40,16 +40,16 @@ Claude Code has no separate "rules" concept for plugins — `plugin.json` recogn
 
 ## Agents
 
-Every `flutter-*` plugin ships a per-plugin agent at `agents/<plugin-name>.md`, auto-discovered by Claude Code (no `agents` key in `plugin.json`). The agent is a **thin wrapper over the plugin's existing skills** — it never duplicates convention content. Conventions stay in `skills/<plugin>-usage/references/*.md` as the single source of truth.
+Most `flutter-*` plugins ship a per-plugin agent at `agents/<plugin-name>.md`, auto-discovered by Claude Code (no `agents` key in `plugin.json`). The agent is a **thin wrapper over the plugin's existing skills** — it never duplicates convention content. Conventions stay in `skills/<plugin>-usage/references/*.md` as the single source of truth.
 
 Conventions for these agents:
 
 - **Name** = plugin name; invoked `@<plugin-name>` (e.g. `@flutter-navigation`). No collision with skills, which use `/<skill-name>`.
 - **`skills:` frontmatter preloads only the `<plugin>-usage` router** (the small routing skill), not its references. The system-prompt body instructs the agent to inspect the project and lazy-load only the matching reference — preserving progressive disclosure.
 - **`description`** scopes the agent to substantial, multi-step work; the `/<plugin>-usage` skill remains the path for quick inline questions.
-- **Tools:** editing plugins use `Read, Glob, Grep, Edit, Write, Bash, Skill`. `flutter-marionette` is read-only (`Read, Glob, Grep, Bash, Skill`) and declares `mcpServers: [marionette]`. `flutter-patrol` declares no MCP server — `patrol_mcp` is a manual user-side install, handled conditionally in the agent body.
+- **Tools:** editing plugins use `Read, Glob, Grep, Edit, Write, Bash, Skill`.
 - **`model`** is omitted everywhere (inherits the session model).
-- `lean-core` (marketplace meta) ships no agent.
+- No agent for `lean-core` (marketplace meta) or the MCP-integration plugins `flutter-patrol` and `flutter-marionette` — those are backed by their own separate tools/repos, so a wrapper agent there is premature.
 
 These agents are Claude Code only and do not mirror to other targets; keeping them thin over `references/*.md` is what contains that cost.
 

@@ -87,16 +87,16 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 
 Once a plugin is installed, it exposes a `/<plugin-name>-usage` skill — for example `/flutter-bloc-usage`, `/flutter-cqrs-usage`, `/flutter-ui-usage`. Run it to see what the plugin covers, its conventions, and example prompts to try next. It's the fastest way to learn a plugin without reading its full `README.md`. If you're not sure where to begin, run `/lean-core-usage` for a tour of the whole marketplace.
 
-### Every Flutter plugin also has an agent
+### Most Flutter plugins also have an agent
 
-Each `flutter-*` plugin also ships an `@<plugin-name>` agent — for example `@flutter-navigation`, `@flutter-bloc`, `@flutter-ui`. Use the **agent** (`@`) for substantial, multi-step work you want handled end to end in its own focused context: it preloads the plugin's `-usage` skill, inspects the project, and applies LeanCode conventions across several files. Use the **skill** (`/`) for quick inline questions and guidance in the current conversation. The `lean-core` meta plugin ships no agent.
+Most `flutter-*` plugins also ship an `@<plugin-name>` agent — for example `@flutter-navigation`, `@flutter-bloc`, `@flutter-ui`. Use the **agent** (`@`) for substantial, multi-step work you want handled end to end in its own focused context: it preloads the plugin's `-usage` skill, inspects the project, and applies LeanCode conventions across several files. Use the **skill** (`/`) for quick inline questions and guidance in the current conversation. The `lean-core` meta plugin and the MCP-integration plugins (`flutter-patrol`, `flutter-marionette`) ship no agent.
 
 ## Repo layout
 
 - `plugins/<plugin-name>/` - one self-contained plugin
 - `plugins/<plugin-name>/skills/` - skills the plugin ships
 - `plugins/<plugin-name>/skills/<skill>/references/` - supporting reference material a skill loads on demand
-- `plugins/<plugin-name>/agents/` - per-plugin agent(s) for substantial, multi-step work (Flutter plugins only)
+- `plugins/<plugin-name>/agents/` - per-plugin agent(s) for substantial, multi-step work (most Flutter plugins)
 - `plugins/<plugin-name>/.claude-plugin/` - plugin manifest
 - `.claude-plugin/marketplace.json` - marketplace index
 
