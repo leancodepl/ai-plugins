@@ -9,6 +9,10 @@ Contains:
 - `skills/flutter-navigation-usage/references/navigation-auto-route.md` — `auto_route` conventions
 - `skills/flutter-navigation-usage/references/navigation-go-router.md` — `go_router` conventions
 
+## Agent
+
+- `@flutter-navigation` — agent for substantial, multi-step navigation work (route trees, shells, guards, deep links). It preloads the `flutter-navigation-usage` skill, inspects the project, and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-navigation-usage` instead.
+
 ## Example usage
 
 - `/flutter-navigation-usage` — get a short explanation of what this plugin does and which asset to use next

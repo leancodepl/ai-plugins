@@ -10,6 +10,10 @@ Covers LeanCode BLoC/Cubit fundamentals, including `flutter_bloc`, `bloc_present
 - `skills/flutter-bloc-usage/SKILL.md` — entry point for this plugin
 - `skills/flutter-context-watch-instead-of-top-builder/SKILL.md` — focused refactor workflow for replacing top-level `BlocBuilder` with `context.watch`
 
+## Agent
+
+- `@flutter-bloc` — agent for substantial, multi-step BLoC/Cubit work (state design, presentation side effects, widget-tree simplification). It preloads the `flutter-bloc-usage` skill and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-bloc-usage` instead.
+
 ## Example usage
 
 - `/flutter-bloc-usage` — get a short explanation of what this plugin does and which asset to use next

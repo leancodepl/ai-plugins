@@ -12,6 +12,10 @@ Contains the analytics rules and helper skills for feature-level IDs, page IDs, 
 - `skills/scaffold-analytics-ids/SKILL.md` - create or extend a feature IDs file
 - `skills/review-analytics-coverage/SKILL.md` - audit a feature or page for missing analytics coverage
 
+## Agent
+
+- `@flutter-analytics` - agent for substantial, multi-step analytics work (creating/extending `*_ids.dart`, adding page/action IDs, reviewing coverage). It preloads the `flutter-analytics-usage` skill and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-analytics-usage` instead.
+
 ## Example usage
 
 - `/flutter-analytics-usage` - get a short explanation of what this plugin does and which asset to use next
