@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "flutter-read-logs",
+  "displayName": "Flutter Read Logs",
+  "description": "Read the running Flutter app's latest run logs as on-demand context. Captures flutter run output per-project (editor-side) and surfaces the relevant slice to Claude via /read-logs.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flutter",
+    "logs",
+    "debugging",
+    "runtime",
+    "dap"
+  ],
+  "skills": "./skills/"
+}
