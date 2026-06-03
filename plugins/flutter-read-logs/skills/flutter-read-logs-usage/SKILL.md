@@ -37,5 +37,7 @@ model — see the caution in `README.md`.
 
 ## Related
 
-- `flutter-marionette` — runtime *interaction* with a live debug app via MCP (drives the
-  app); complements reading its logs.
+- `flutter-marionette` — the **proactive** counterpart: *interact* with a live app via MCP.
+  Reach for it to *make* things happen; reach for `/read-logs` to *inspect* what a run
+  already logged (including crashes/build errors marionette can't see, since it needs a live
+  connection).

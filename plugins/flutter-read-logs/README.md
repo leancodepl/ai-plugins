@@ -118,5 +118,10 @@ README. This `README.md` is the canonical copy — keep the two in sync when cha
 
 ## Related plugins
 
-- [`flutter-marionette`](../flutter-marionette/) — runtime *interaction* with a live debug
-  app via MCP (drives the app); complements reading its logs.
+- [`flutter-marionette`](../flutter-marionette/) — the **proactive** counterpart: it drives
+  a *live* app (taps, navigation, hot reload, query state) via MCP, needing instrumentation
+  and a running connection. `flutter-read-logs` is **reactive** — it reads what a run
+  *already produced*, including build failures and crashed/exited runs, with no
+  instrumentation or live app. Rule of thumb: **marionette to *make* things happen,
+  read-logs to *see what happened*.** They're complementary — each catches what the other
+  can't (marionette: live state; read-logs: build/crash output before any connection).
