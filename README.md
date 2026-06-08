@@ -82,6 +82,7 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 - [`flutter-ui`](plugins/flutter-ui/) - design-system-driven UI, loading/error patterns, localized presentation text, and UI implementation checklists
 - [`flutter-patrol`](plugins/flutter-patrol/) - Patrol test architecture, key conventions, and Patrol MCP workflow for AI-assisted E2E work
 - [`flutter-marionette`](plugins/flutter-marionette/) - runtime interaction with a live debug app through Marionette MCP for exploration, smoke checks, and UI debugging
+- [`flutter-read-logs`](plugins/flutter-read-logs/) - read the running app's latest `flutter run` logs as on-demand context via `/read-logs`
 
 ### Every plugin has a `-usage` skill
 
