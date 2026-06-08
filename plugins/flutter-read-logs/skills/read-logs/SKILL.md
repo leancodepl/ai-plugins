@@ -6,6 +6,13 @@ argument-hint: "[what to look for in the run logs]"
 
 # Read run logs
 
+> **⚠️ Reading a run sends its contents to the model — that *is* the leak, and it's how
+> this skill works.** Run logs routinely contain auth/refresh/push tokens, emails, and
+> customer data; the moment you read one, that data is sent to the model. Invoking
+> `/read-logs` means **consciously accepting** that this captured run gets sent. Don't run
+> it against production or real-customer data unless you've accepted that risk. (See the
+> plugin README for redaction options and the full data-handling note.)
+
 Load the running app's `flutter run` output as context for the task the user gave when
 invoking this skill. Editor setup (making the app write the log file) is documented in this
 plugin's `README.md` — that is canonical. The **First-run setup** section below intentionally
@@ -20,11 +27,6 @@ skill auto-detects which:
 - **Zed / terminal run task:** raw `script` TTY transcript (plain text, ANSI codes).
 - **VS Code / Cursor (`dart.dapLogFile`):** Debug Adapter Protocol log (JSON-framed; the
   app's output is inside `event:"output"` messages).
-
-> **⚠️ Logs can contain secrets and customer data** — auth/push tokens, emails, account
-> details, anything logged at runtime. The file stays local in `/tmp`, but reading **sends
-> the slice you read to the model**. Be mindful of what a run captured, especially against
-> production or real customer data.
 
 **This skill loads logs as CONTEXT — it is not a standalone analyzer.** Don't summarize the
 run, surface all errors, or volunteer a diagnosis on your own. Read the logs so you have
@@ -74,11 +76,12 @@ text, then read it with the **task as your lens** — not a fixed filter.
 
 ```bash
 CLEAN="${L%.log}.clean.log"
-if head -50 "$L" | grep -q '\[DAP\]\|"event":"output"'; then
+if head -50 "$L" | grep -qE '\[DAP\]|"event"[[:space:]]*:[[:space:]]*"output"'; then
   echo "[format: DAP — extracting app output]"
   # grep first: only the output-event lines reach the JSON parser, not the whole protocol —
-  # so extraction cost tracks app output, not total DAP traffic.
-  grep '"event":"output"' "$L" | python3 -c '
+  # so extraction cost tracks app output, not total DAP traffic. -E (not \|) for portable
+  # alternation; [[:space:]]* tolerates non-compact JSON.
+  grep -E '"event"[[:space:]]*:[[:space:]]*"output"' "$L" | python3 -c '
 import json, sys
 for line in sys.stdin:
     i = line.find("{")
@@ -89,7 +92,7 @@ for line in sys.stdin:
         sys.stdout.write(m.get("body", {}).get("output", ""))
 ' > "$CLEAN" 2>/dev/null
   # jq fallback if python3 is unavailable:
-  # grep '"event":"output"' "$L" | sed -E 's/^[^{]*//' | jq -rj 'select(.event=="output") | .body.output' > "$CLEAN"
+  # grep -E '"event"[[:space:]]*:[[:space:]]*"output"' "$L" | sed -E 's/^[^{]*//' | jq -rj 'select(.event=="output") | .body.output' > "$CLEAN"
 else
   echo "[format: plain transcript]"
   sed -E $'s/\x1b\\[[0-9;?]*[ -\\/]*[@-~]//g; s/\r$//' "$L" > "$CLEAN"
@@ -97,8 +100,13 @@ fi
 wc -l "$CLEAN"
 ```
 
-(If a DAP log can't be extracted because neither `python3` nor `jq` is present, tell the
-user to `brew install jq` and fall back to reading matching raw lines so they're not blocked.)
+(If a DAP log can't be extracted because neither `python3` nor `jq` is present: `python3`
+ships on most systems; otherwise install `jq` via the platform's package manager —
+`brew install jq` on macOS, `apt install jq` / `dnf install jq` on Linux. Until then, fall
+back to reading matching raw lines so the user isn't blocked.)
+
+**Transparency:** before reading, surface one line to the dev — *"reading `<path>` — its
+contents go to the model"* — so each read is a visible, conscious step (no blocking prompt).
 
 **Then read `$CLEAN` with the task as the lens — go as deep as the task needs:**
 
@@ -136,6 +144,11 @@ want the existing run (e.g. investigating a past race), just proceed.
 Goal: leave the dev with their editor configured to capture logs, with no surprises. Never
 guess silently and never commit anything. (The `README.md` is the canonical copy of these
 steps; this inline version exists so setup works at runtime.)
+
+**This is the conscious opt-in moment.** Before wiring anything up, make sure the dev
+understands that enabling capture means Claude will read run logs into context — which
+**sends them to the model** — and that runs can contain tokens and customer data. Get a
+clear yes before applying the setup; if they prefer not to take that risk, don't wire it.
 
 ### 1. Determine which editor the dev runs the app in
 

@@ -28,10 +28,24 @@ The only per-developer step is making your editor write that file — **do it on
 run `/read-logs` before setting it up, the skill walks you through it (and offers to apply
 the change). It only edits **local** config; it never commits anything.
 
-> **⚠️ Logs can contain secrets and customer data** — auth/push tokens, emails, account
-> details, anything logged at runtime. The file stays local in `/tmp`, but `/read-logs`
-> **sends the slice it reads to the model**. Be mindful of what a run captured, especially
-> against production or real customer data.
+## ⚠️ Security / data handling — read this first
+
+**Reading a run sends its contents to the model. That *is* the leak — it's how the tool
+works, and it can't be prevented.** Run logs routinely contain auth/refresh/push tokens,
+emails, account details, and other customer data. The file stays local in `/tmp`, but the
+moment `/read-logs` reads it, that slice goes to the model.
+
+Treat this as a **conscious decision**:
+
+- **Enabling capture** (the one-time setup below) is your opt-in — the skill confirms it
+  with you before wiring anything up.
+- **Each `/read-logs`** announces the file it's about to read before reading it.
+- **Prefer test/staging data** when you'll `/read-logs`; avoid production or real-customer
+  runs unless you've accepted the exposure.
+
+If you need to read production-shaped logs, the durable mitigation is a **redaction pass**
+(mask tokens/emails/keys before the model sees them) — not yet built; tracked as a possible
+fast-follow. Raise it if your team wants it before adopting this widely.
 
 In the snippets below, replace `myapp` with your repo's folder name (it must match the path
 `/read-logs` derives — i.e. `/tmp/flutter-<repo>.log`).
