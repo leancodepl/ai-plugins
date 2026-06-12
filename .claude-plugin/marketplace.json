@@ -130,6 +130,15 @@
         "./skills/flutter-read-logs-usage",
         "./skills/read-logs"
       ]
+    },
+    {
+      "name": "lean-interactive-html",
+      "source": "./plugins/lean-interactive-html",
+      "description": "Generate single-file interactive HTML reports, dashboards, plans, architecture diagrams, and decision forms — self-contained, no CDN, no build step, via /interactive-html.",
+      "skills": [
+        "./skills/lean-interactive-html-usage",
+        "./skills/interactive-html"
+      ]
     }
   ]
 }

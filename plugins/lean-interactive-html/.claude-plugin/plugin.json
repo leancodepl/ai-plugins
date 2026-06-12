@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "lean-interactive-html",
+  "displayName": "Interactive HTML Artifacts",
+  "description": "Generate single-file interactive HTML reports, dashboards, plans, architecture diagrams, and decision forms.",
+  "version": "0.1.0",
+  "stability": "experimental",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "html",
+    "report",
+    "dashboard",
+    "visualization",
+    "docs"
+  ],
+  "skills": "./skills/"
+}

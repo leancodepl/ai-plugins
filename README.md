@@ -84,6 +84,10 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 - [`flutter-marionette`](plugins/flutter-marionette/) - runtime interaction with a live debug app through Marionette MCP for exploration, smoke checks, and UI debugging
 - [`flutter-read-logs`](plugins/flutter-read-logs/) - read the running app's latest `flutter run` logs as on-demand context via `/read-logs`
 
+### Docs and reporting
+
+- [`lean-interactive-html`](plugins/lean-interactive-html/) - single-file interactive HTML artifacts (reports, dashboards, plans, architecture diagrams, decision forms) via `/interactive-html` — not Flutter-specific
+
 ### Every plugin has a `-usage` skill
 
 Once a plugin is installed, it exposes a `/<plugin-name>-usage` skill — for example `/flutter-bloc-usage`, `/flutter-cqrs-usage`, `/flutter-ui-usage`. Run it to see what the plugin covers, its conventions, and example prompts to try next. It's the fastest way to learn a plugin without reading its full `README.md`. If you're not sure where to begin, run `/lean-core-usage` for a tour of the whole marketplace.

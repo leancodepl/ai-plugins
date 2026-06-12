@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TITLE — one line, matches the h1</title>
+<style>
+  /* ---- Design tokens. Adjust accents per artifact; keep the structure. ---- */
+  :root {
+    --bg: #f6f7fa;
+    --surface: #ffffff;
+    --fg: #0f172a;
+    --muted: #64748b;
+    --border: #cbd5e1;
+    --accent: #2563eb;
+    --accent-bg: #dbeafe;
+    --ok: #047857;
+    --warn: #b45309;
+    --bad: #b91c1c;
+    --info: #6366f1;
+    --code-bg: #e2e8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0d11; --surface: #14171c; --fg: #e5e7eb; --muted: #94a3b8;
+      --border: #334155; --accent-bg: #1e3a8a; --code-bg: #1e293b;
+      --ok: #34d399; --warn: #fbbf24; --bad: #f87171; --info: #a5b4fc;
+    }
+  }
+  /* For files SENT TO OTHER PEOPLE: delete the media query above and force dark
+     by moving the dark values into :root — the recipient's browser theme is unknown. */
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; font-size: 15px;
+  }
+  code {
+    background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: 12.5px;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 24px 36px 64px; }
+
+  /* ---- Header: title, lead, meta chips ---- */
+  header { padding: 28px 36px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  header .inner { max-width: 1040px; margin: 0 auto; }
+  header h1 { margin: 0 0 4px; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  header .lead { margin: 0; color: var(--muted); font-size: 14px; }
+  .chips { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .chip {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-bg); color: var(--fg); font-weight: 600;
+  }
+
+  /* ---- Tabs (drop if single-page) ---- */
+  nav.tabs { position: sticky; top: 0; background: var(--surface); border-bottom: 1px solid var(--border); z-index: 5; }
+  nav.tabs .inner { max-width: 1040px; margin: 0 auto; display: flex; gap: 2px; }
+  .tab-btn {
+    background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer;
+    padding: 12px 16px; font-size: 14px; font-weight: 600; color: var(--muted);
+  }
+  .tab-btn:hover { color: var(--fg); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ---- Stat cards ---- */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 20px 0; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .stat .num { font-size: 1.8rem; font-weight: 700; color: var(--accent); display: block; line-height: 1.1; }
+  .stat .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* ---- Status badges ---- */
+  .badge {
+    display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+  }
+  .badge.ok   { background: rgba(4,120,87,.15);  color: var(--ok); }
+  .badge.warn { background: rgba(180,83,9,.15);  color: var(--warn); }
+  .badge.bad  { background: rgba(185,28,28,.15); color: var(--bad); }
+  .badge.info { background: rgba(99,102,241,.15); color: var(--info); }
+
+  /* ---- Pure-CSS bar chart ---- */
+  .bars { display: grid; gap: 8px; margin: 14px 0; }
+  .bar-row { display: grid; grid-template-columns: 160px 1fr 48px; gap: 10px; align-items: center; font-size: 13px; }
+  .bar-track { background: var(--code-bg); border-radius: 6px; height: 14px; overflow: hidden; }
+  .bar-fill { background: var(--accent); height: 100%; border-radius: 6px; }
+  .bar-val { color: var(--muted); text-align: right; }
+
+  /* ---- Collapsible ---- */
+  details.expandable { border: 1px solid var(--border); border-radius: 10px; margin: 10px 0; background: var(--surface); }
+  details.expandable summary { cursor: pointer; padding: 12px 16px; font-weight: 600; user-select: none; }
+  details.expandable .body { padding: 4px 16px 14px; }
+
+  /* ---- Filterable table with expandable rows ---- */
+  .filter-row { margin: 12px 0; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .filter-row button {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+    padding: 4px 14px; font-size: 13px; cursor: pointer; color: var(--fg);
+  }
+  .filter-row button.active, .filter-row button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .filter-row input { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--fg); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  tr.expandable-row { cursor: pointer; }
+  tr.expandable-row:hover { background: var(--accent-bg); }
+  tr.row-detail { display: none; }
+  tr.row-detail.open { display: table-row; }
+  tr.row-detail td { background: var(--surface); color: var(--muted); }
+
+  /* ---- Copy button ---- */
+  .copy-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .copy-btn.copied { background: var(--ok); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>TITLE</h1>
+    <p class="lead">One-line description · generated DATE · source: COMMANDS-OR-REPO</p>
+    <div class="chips"><span class="chip">meta 1</span><span class="chip">meta 2</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="inner">
+    <button class="tab-btn active" data-tab="tab-overview">Overview</button>
+    <button class="tab-btn" data-tab="tab-details">Details</button>
+  </div>
+</nav>
+
+<main>
+  <section class="tab-panel active" id="tab-overview">
+    <div class="stats">
+      <div class="stat"><span class="num">42</span><span class="lbl">things counted</span></div>
+      <div class="stat"><span class="num">7</span><span class="lbl">other things</span></div>
+    </div>
+    <div class="bars">
+      <div class="bar-row"><span>Label A</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-val">80</span></div>
+      <div class="bar-row"><span>Label B</span><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><span class="bar-val">35</span></div>
+    </div>
+    <details class="expandable"><summary>Secondary detail <span class="badge ok">In place</span></summary>
+      <div class="body"><p>Collapsed by default. Quote real evidence here.</p></div>
+    </details>
+  </section>
+
+  <section class="tab-panel" id="tab-details">
+    <div class="filter-row">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="ok">OK</button>
+      <button data-filter="bad">Problems</button>
+      <input type="search" id="table-search" placeholder="Filter rows…">
+    </div>
+    <table id="data-table">
+      <thead><tr><th>Item</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="expandable-row" data-status="ok"><td>Row one</td><td><span class="badge ok">OK</span></td></tr>
+        <tr class="row-detail"><td colspan="2">Expanded detail for row one.</td></tr>
+        <tr class="expandable-row" data-status="bad"><td>Row two</td><td><span class="badge bad">Missing</span></td></tr>
+        <tr class="row-detail"><td colspan="2">Expanded detail for row two.</td></tr>
+      </tbody>
+    </table>
+    <label><input type="checkbox" id="check-example" data-persist> Persisted checkbox</label>
+    <p><button class="copy-btn" onclick="copyText('copy-source', this)">Copy summary</button></p>
+    <pre id="copy-source" style="display:none">Plain-text version for pasting back into the chat.</pre>
+  </section>
+</main>
+
+<!-- Embedded data: ONE place to correct when numbers change -->
+<script type="application/json" id="data">
+{ "generated": "DATE", "stats": { "things": 42, "others": 7 } }
+</script>
+
+<script>
+  const ARTIFACT_KEY = 'CHANGE-ME-artifact-name'; // localStorage namespace
+
+  // ---- Tabs + keyboard shortcuts 1..N ----
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  function activateTab(btn) {
+    tabs.forEach(b => b.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  }
+  tabs.forEach(btn => btn.addEventListener('click', () => activateTab(btn)));
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea')) return;
+    const i = Number(e.key) - 1;
+    if (i >= 0 && i < tabs.length) activateTab(tabs[i]);
+  });
+
+  // ---- Expandable table rows ----
+  document.querySelectorAll('tr.expandable-row').forEach(row => {
+    row.addEventListener('click', () => row.nextElementSibling.classList.toggle('open'));
+  });
+
+  // ---- Status filter + text search ----
+  const filterBtns = document.querySelectorAll('.filter-row button');
+  filterBtns.forEach(btn => btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }));
+  document.getElementById('table-search').addEventListener('input', applyFilters);
+  function applyFilters() {
+    const status = document.querySelector('.filter-row button.active').dataset.filter;
+    const q = document.getElementById('table-search').value.toLowerCase();
+    document.querySelectorAll('#data-table tbody tr.expandable-row').forEach(row => {
+      const show = (status === 'all' || row.dataset.status === status)
+        && row.textContent.toLowerCase().includes(q);
+      row.style.display = show ? '' : 'none';
+      if (!show) row.nextElementSibling.classList.remove('open');
+    });
+  }
+
+  // ---- localStorage persistence for [data-persist] checkboxes ----
+  document.querySelectorAll('input[type=checkbox][data-persist]').forEach(cb => {
+    cb.checked = localStorage.getItem(ARTIFACT_KEY + ':' + cb.id) === '1';
+    cb.addEventListener('change', () =>
+      localStorage.setItem(ARTIFACT_KEY + ':' + cb.id, cb.checked ? '1' : '0'));
+  });
+
+  // ---- Copy to clipboard ----
+  function copyText(sourceId, btn) {
+    const text = document.getElementById(sourceId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.classList.add('copied');
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = old; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
