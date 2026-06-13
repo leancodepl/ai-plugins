@@ -4,7 +4,6 @@
   "displayName": "LeanCode Core",
   "description": "Entry point for the LeanCode AI plugins marketplace. Explains what's available and helps contributors open PRs to add or improve plugins.",
   "version": "0.1.0",
-  "stability": "experimental",
   "author": {
     "name": "LeanCode"
   },

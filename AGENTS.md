@@ -46,7 +46,7 @@ Validate plugin structure locally with Go:
 go run ./cmd/validate-plugins
 ```
 
-CI runs the same structure validation, Go formatting/lint, and the official Claude Code plugin-spec check (`claude plugin validate .`, errors-only for now) on every PR. After pushing, watch CI with `gh pr checks <pr-number>`.
+CI runs the same structure validation, Go formatting/lint, and the official Claude Code plugin-spec check (`claude plugin validate . --strict`, warnings fail the build) on every PR. After pushing, watch CI with `gh pr checks <pr-number>`.
 
 ## Platform notes
 
