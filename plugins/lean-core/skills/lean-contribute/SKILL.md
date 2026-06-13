@@ -122,7 +122,7 @@ Per-plugin semver in `.claude-plugin/plugin.json`.
 - **MINOR** — new skill, new reference, new behavior; expanded scope; additive change.
 - **MAJOR** — rename, removal, or reversal of existing guidance.
 
-Optional `stability` field on each plugin: `experimental`, `beta`, or `stable`.
+Keep `plugin.json` to fields in the official Claude Code plugin manifest schema — CI runs `claude plugin validate . --strict`, which fails on unrecognized fields.
 
 ### What Claude Code does with the version
 

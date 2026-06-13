@@ -25,3 +25,22 @@ jobs:
 
       - name: Validate plugin structure
         run: go run ./cmd/validate-plugins
+
+  spec:
+    name: Claude Code plugin spec check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code@2.1.173
+
+      - name: Validate against the Claude Code plugin schema
+        run: claude plugin validate . --strict
