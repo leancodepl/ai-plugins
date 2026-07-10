@@ -18,11 +18,19 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Fresh marker so the reader can find where this session starts in an appended file.
 /bin/date '+=== requested %Y-%m-%d %H:%M:%S ===' >> "$OUT"
 
-# Open a new Terminal window that runs the logger. Do NOT `activate` Terminal —
+# Open a Terminal window that runs the logger. Do NOT `activate` Terminal —
 # stealing focus would move the VoiceOver cursor off the app under test.
+#
+# If Terminal isn't running yet, launching it already opens one default window;
+# run the logger IN that window (`in window 1`) instead of letting `do script`
+# open a SECOND one. (`running` is queried without launching Terminal.)
 osascript >/dev/null <<OSA
 tell application "Terminal"
-  do script "bash '$DIR/vo_log.sh' '$OUT'"
+  if not running then
+    do script "bash '$DIR/vo_log.sh' '$OUT'" in window 1
+  else
+    do script "bash '$DIR/vo_log.sh' '$OUT'"
+  end if
 end tell
 OSA
 

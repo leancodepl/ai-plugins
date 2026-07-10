@@ -23,11 +23,12 @@ to explain it — just point the dev at the README's *Setup* section if a check 
 bash "${CLAUDE_PLUGIN_ROOT}/skills/a11y-vo-log/scripts/start_log_terminal.sh" ~/vo_log.txt
 ```
 
-A new Terminal window opens showing the live transcript. Do **not** activate/steal
-focus to it — that moves the VoiceOver cursor off the app under test. If the
-script's precheck fails, tell the dev to press **Cmd+F5** first (Claude must not
-toggle VoiceOver — the dev controls it so focus lands where they expect) and see
-the README *Setup* section.
+The script **starts VoiceOver itself** if it's off, then opens a new Terminal window
+showing the live transcript. Do **not** activate/steal focus to that window — that
+moves the VoiceOver cursor off the app under test. If the script reports it couldn't
+start VoiceOver or can't control it over AppleScript, point the dev at the README
+*Setup* section (Cmd+F5 to toggle VO by hand; AppleScript-control + Automation
+permissions).
 
 ### 2. Dev runs the session (human)
 

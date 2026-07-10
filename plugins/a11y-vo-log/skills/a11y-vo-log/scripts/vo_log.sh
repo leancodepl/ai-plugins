@@ -49,12 +49,31 @@ OUT="${1:-$HOME/vo_log.txt}"
 echo "$OUT" > /tmp/vo_log_target
 trap 'rm -f /tmp/vo_log_target' EXIT
 
-# Precheck without launching VoiceOver: it must already be running (pgrep, not
-# an AppleScript 'tell', which would launch it). Then confirm it's controllable.
+# Start VoiceOver if it is off. Launching VoiceOver.app starts the screen reader
+# (`open -a`, not an AppleScript 'tell' — that also works but 'open' needs no extra
+# permission). The poller's own loop still guards every AppleScript query with pgrep,
+# so once the dev turns VO OFF at the end of the session it stays off — this only
+# handles the START. Set VO_NO_AUTOSTART=1 to keep the old "turn it on yourself" flow.
 if ! pgrep -x VoiceOver >/dev/null 2>&1; then
-  echo "ERROR: VoiceOver is not running. Turn it on first: Cmd+F5."
-  exit 1
+  if [ "${VO_NO_AUTOSTART:-}" = "1" ]; then
+    echo "ERROR: VoiceOver is not running. Turn it on first: Cmd+F5."
+    exit 1
+  fi
+  echo "VoiceOver is off — starting it..."
+  open -a VoiceOver 2>/dev/null || open /System/Library/CoreServices/VoiceOver.app 2>/dev/null
+  # Wait up to ~10s for the process to come up.
+  i=0
+  while [ "$i" -lt 20 ]; do
+    pgrep -x VoiceOver >/dev/null 2>&1 && break
+    sleep 0.5
+    i=$((i + 1))
+  done
+  if ! pgrep -x VoiceOver >/dev/null 2>&1; then
+    echo "ERROR: could not start VoiceOver automatically. Turn it on with Cmd+F5 and rerun."
+    exit 1
+  fi
 fi
+# Confirm it's controllable over AppleScript (safe now that VO is running).
 if ! osascript -e 'tell application "VoiceOver" to return "ok"' >/dev/null 2>&1; then
   echo "ERROR: cannot control VoiceOver via AppleScript."
   echo "Enable: VoiceOver Utility (VO+F8) -> General -> 'Allow VoiceOver to be controlled with AppleScript'"

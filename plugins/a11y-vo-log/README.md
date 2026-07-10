@@ -98,6 +98,9 @@ the *"VoiceOver gesture logger"* rules.
 /a11y-vo-log
 ```
 
-Claude opens the logging Terminal, you enable VoiceOver (**Cmd+F5**) and run the
-buggy flow, then say **"read the log"** and Claude writes up the bugs. Type a short
-note + Enter in the log window to record a visual observation as an `ACTION` line.
+Claude opens the logging Terminal (starting VoiceOver for you if it's off), you run
+the buggy flow, then say **"read the log"** and Claude writes up the bugs. Type a
+short note + Enter in the log window to record a visual observation as an `ACTION`
+line. To turn VoiceOver off again when done, press **Cmd+F5** — the logger stays
+quiet while it's off. (Set `VO_NO_AUTOSTART=1` if you'd rather enable VoiceOver
+yourself before starting.)
