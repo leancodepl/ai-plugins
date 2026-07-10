@@ -15,7 +15,7 @@ file:line → fix` chains. Project-agnostic: it logs whatever macOS app is front
 - `skills/a11y-vo-log/SKILL.md` — the workflow (spawn logger → dev runs flow → Claude
   diagnoses) plus the announcement-diagnosis table
 - `skills/a11y-vo-log-usage/SKILL.md` — routing skill: what the plugin does and when to
-  reach for it vs. `a11y-audit`
+  reach for it
 - `skills/a11y-vo-log/scripts/vo_log.sh` — the poller: reads VoiceOver's "last phrase"
   ~6×/s (deduped) and appends `VO` lines
 - `skills/a11y-vo-log/scripts/start_log_terminal.sh` — opens the dedicated logging

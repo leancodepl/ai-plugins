@@ -28,13 +28,11 @@ description: Explain what the `a11y-vo-log` plugin does and how to use it. Use w
 - Is **project-agnostic**: it logs whatever macOS app is frontmost (web, native,
   Flutter).
 
-## When to reach for it vs. `a11y-audit`
+## When to reach for it
 
-- **`a11y-vo-log`** — the *dev* drives VoiceOver by hand and Claude reads the resulting
-  transcript. Best for reproducing a bug the dev already feels, or capturing a real
-  human navigation flow.
-- **`a11y-audit`** — Claude *operates* VoiceOver itself (autonomous find/fix/verify),
-  no human swiping.
+The *dev* drives VoiceOver by hand and Claude reads the resulting transcript. Best
+for reproducing a bug the dev already feels, or capturing a real human navigation
+flow — without recording and re-watching a video.
 
 ## Setup
 

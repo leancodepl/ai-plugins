@@ -49,8 +49,7 @@ awk '/=== requested/{buf=""} {buf=buf $0 "\n"} END{printf "%s", buf}' ~/vo_log.t
 
 Then analyze the announcement sequence with the table below. For each bad
 announcement, state the chain *phrase → focused widget → file:line → property →
-fix*. Fixing and verifying continues via the `a11y-audit` skill (the AI re-drives
-VoiceOver to prove the fix) or the dev re-runs this logger after the change.
+fix*. After a fix, re-run this logger to confirm the announcement changed.
 
 ## Diagnosing the transcript
 
@@ -90,9 +89,3 @@ record with the caption panel on (VO+F10 / TalkBack "Display speech output"), th
 slice and read it frame by frame:
 `ffmpeg -v error -i <video> -vf "fps=2" ai_tmp/frames/f_%03d.png` — treat each
 caption exactly like a `VO |` log line. Delete `ai_tmp/` afterwards.
-
-## Companion skill
-
-- `a11y-audit` — the AI *operates* VoiceOver itself (autonomous audit, bug repro,
-  fix verification), no human swiping. Use whenever Claude should drive the screen
-  reader instead of the dev.
