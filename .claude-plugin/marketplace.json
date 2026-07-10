@@ -132,12 +132,12 @@
       ]
     },
     {
-      "name": "a11y-log",
-      "source": "./plugins/a11y-log",
-      "description": "Capture a timestamped transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report via /a11y-log.",
+      "name": "a11y-vo-log",
+      "source": "./plugins/a11y-vo-log",
+      "description": "Capture a timestamped transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report via /a11y-vo-log.",
       "skills": [
-        "./skills/a11y-log-usage",
-        "./skills/a11y-log"
+        "./skills/a11y-vo-log-usage",
+        "./skills/a11y-vo-log"
       ]
     }
   ]

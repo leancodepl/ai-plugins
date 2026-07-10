@@ -1,4 +1,4 @@
-# a11y-log
+# a11y-vo-log
 
 Capture a timestamped **text transcript of everything VoiceOver speaks** during a
 manual screen-reader session on macOS — and, optionally, each keyboard nav gesture
@@ -12,17 +12,17 @@ file:line → fix` chains. Project-agnostic: it logs whatever macOS app is front
 
 ## Included assets
 
-- `skills/a11y-log/SKILL.md` — the workflow (spawn logger → dev runs flow → Claude
+- `skills/a11y-vo-log/SKILL.md` — the workflow (spawn logger → dev runs flow → Claude
   diagnoses) plus the announcement-diagnosis table
-- `skills/a11y-log-usage/SKILL.md` — routing skill: what the plugin does and when to
+- `skills/a11y-vo-log-usage/SKILL.md` — routing skill: what the plugin does and when to
   reach for it vs. `a11y-audit`
-- `skills/a11y-log/scripts/vo_log.sh` — the poller: reads VoiceOver's "last phrase"
+- `skills/a11y-vo-log/scripts/vo_log.sh` — the poller: reads VoiceOver's "last phrase"
   ~6×/s (deduped) and appends `VO` lines
-- `skills/a11y-log/scripts/start_log_terminal.sh` — opens the dedicated logging
+- `skills/a11y-vo-log/scripts/start_log_terminal.sh` — opens the dedicated logging
   Terminal window running `vo_log.sh`
-- `skills/a11y-log/scripts/vo_gesture.sh` — appends a `GESTURE` line; called by
+- `skills/a11y-vo-log/scripts/vo_gesture.sh` — appends a `GESTURE` line; called by
   Karabiner on each VoiceOver nav combo
-- `skills/a11y-log/assets/karabiner_vo_gesture_logger.json` — Karabiner rules
+- `skills/a11y-vo-log/assets/karabiner_vo_gesture_logger.json` — Karabiner rules
   template (the `__VO_GESTURE_SH__` placeholder is stamped during setup)
 
 ## How it works
@@ -54,20 +54,26 @@ The process running Claude Code needs to control **VoiceOver** and **Terminal**.
 first run may prompt *"… wants to control Terminal / VoiceOver"* → **Allow**. If it
 errors instead, add them under System Settings → Privacy & Security → Automation.
 
-That is enough for **speech logging**. `/a11y-log` now works — you just won't get
+That is enough for **speech logging**. `/a11y-vo-log` now works — you just won't get
 `GESTURE` lines until step 3.
 
 ### 3. Keyboard-gesture logging (Karabiner-Elements)
 
 This is what adds the `GESTURE` lines (and lets Claude spot silent focus moves).
-Install [Karabiner-Elements](https://karabiner-elements.pqrs.org/), then wire the
-bundled rules to a **stable** copy of the gesture logger — stable so plugin updates
-(which land under a versioned path) don't break Karabiner:
+Install [Karabiner-Elements](https://karabiner-elements.pqrs.org/) first — that
+install is the only manual step. The rest below (copy the logger to a stable spot,
+stamp the rules) is plain shell, so **if you trust Claude, just ask it to do this
+setup for you** — paste this section or say *"do the a11y-vo-log Karabiner setup"*
+and it runs the commands. It only writes to `~/.local/bin/` and
+`~/.config/karabiner/`; you still enable the rule yourself in the Karabiner UI at
+the end. Prefer to do it by hand? Wire the bundled rules to a **stable** copy of the
+gesture logger — stable so plugin updates (which land under a versioned path) don't
+break Karabiner:
 
 ```bash
 # Resolve the installed plugin's files (latest version wins)
-GEST_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-log/skills/a11y-log/scripts/vo_gesture.sh' | sort | tail -1)"
-RULES_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-log/skills/a11y-log/assets/karabiner_vo_gesture_logger.json' | sort | tail -1)"
+GEST_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-vo-log/skills/a11y-vo-log/scripts/vo_gesture.sh' | sort | tail -1)"
+RULES_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-vo-log/skills/a11y-vo-log/assets/karabiner_vo_gesture_logger.json' | sort | tail -1)"
 
 # a) Copy the gesture logger to a stable location that survives plugin updates
 mkdir -p ~/.local/bin
@@ -89,21 +95,9 @@ the *"VoiceOver gesture logger"* rules.
 ## Usage
 
 ```
-/a11y-log
+/a11y-vo-log
 ```
 
 Claude opens the logging Terminal, you enable VoiceOver (**Cmd+F5**) and run the
 buggy flow, then say **"read the log"** and Claude writes up the bugs. Type a short
 note + Enter in the log window to record a visual observation as an `ACTION` line.
-
-## Data-handling note
-
-The transcript contains whatever VoiceOver reads aloud — screen text, labels, and
-any on-screen customer data. Reading the log sends that content to the model. Don't
-run it against production/real-customer data unless you've accepted that, and delete
-`~/vo_log.txt` when done if it captured anything sensitive.
-
-## Related plugins
-
-- [`flutter-marionette`](../flutter-marionette/) — AI drives a live Flutter app
-  (runtime exploration); pairs with autonomous a11y checks.

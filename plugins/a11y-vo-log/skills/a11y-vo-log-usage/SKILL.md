@@ -1,9 +1,9 @@
 ---
-name: a11y-log-usage
-description: Explain what the `a11y-log` plugin does and how to use it. Use when the user invokes `/a11y-log-usage`, asks what this plugin covers, or needs help with VoiceOver speech logging, gesture capture, or the one-time setup.
+name: a11y-vo-log-usage
+description: Explain what the `a11y-vo-log` plugin does and how to use it. Use when the user invokes `/a11y-vo-log-usage`, asks what this plugin covers, or needs help with VoiceOver speech logging, gesture capture, or the one-time setup.
 ---
 
-# a11y-log Usage
+# a11y-vo-log Usage
 
 ## How to respond
 
@@ -11,7 +11,7 @@ description: Explain what the `a11y-log` plugin does and how to use it. Use when
   the plugin is for and when it beats a screen recording.
 - Point to the one-time setup in the plugin `README.md` (VoiceOver AppleScript
   control, Automation permission, optional Karabiner gesture rules).
-- If the user already has a concrete logging task, hand off to the `a11y-log`
+- If the user already has a concrete logging task, hand off to the `a11y-vo-log`
   skill and do the work.
 - Do not reply with filler like "skill loaded" or "ready for the task" before
   explaining the plugin.
@@ -30,7 +30,7 @@ description: Explain what the `a11y-log` plugin does and how to use it. Use when
 
 ## When to reach for it vs. `a11y-audit`
 
-- **`a11y-log`** — the *dev* drives VoiceOver by hand and Claude reads the resulting
+- **`a11y-vo-log`** — the *dev* drives VoiceOver by hand and Claude reads the resulting
   transcript. Best for reproducing a bug the dev already feels, or capturing a real
   human navigation flow.
 - **`a11y-audit`** — Claude *operates* VoiceOver itself (autonomous find/fix/verify),
@@ -48,5 +48,5 @@ One-time, per machine — see the plugin `README.md`:
 
 ## Example usage
 
-- `/a11y-log` — Claude opens the logging Terminal, you run your flow, then say
+- `/a11y-vo-log` — Claude opens the logging Terminal, you run your flow, then say
   "read the log" and Claude writes up the bugs.
