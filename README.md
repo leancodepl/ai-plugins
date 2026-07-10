@@ -55,6 +55,7 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 
 - [`flutter-patrol`](plugins/flutter-patrol/) - Patrol CLI and Patrol MCP
 - [`flutter-marionette`](plugins/flutter-marionette/) - Marionette MCP and app-side binding
+- [`a11y-log`](plugins/a11y-log/) - VoiceOver AppleScript control, macOS Automation permission, and (optional) Karabiner gesture rules
 
 ## Available plugins
 
@@ -83,6 +84,7 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 - [`flutter-patrol`](plugins/flutter-patrol/) - Patrol test architecture, key conventions, and Patrol MCP workflow for AI-assisted E2E work
 - [`flutter-marionette`](plugins/flutter-marionette/) - runtime interaction with a live debug app through Marionette MCP for exploration, smoke checks, and UI debugging
 - [`flutter-read-logs`](plugins/flutter-read-logs/) - read the running app's latest `flutter run` logs as on-demand context via `/read-logs`
+- [`a11y-log`](plugins/a11y-log/) - capture a text transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it via `/a11y-log`
 
 ### Every plugin has a `-usage` skill
 
