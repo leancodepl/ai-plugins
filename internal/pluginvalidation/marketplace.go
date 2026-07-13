@@ -65,14 +65,17 @@ func (v *validator) validateMarketplaceEntries(where string, entries []marketpla
 				seen[entry.Name] = i
 			}
 		}
-		v.requireNonEmpty(where, fmt.Sprintf("plugins[%d].source", i), entry.Source)
+		if !entry.External {
+			v.requireNonEmpty(where, fmt.Sprintf("plugins[%d].source", i), entry.Source)
+		}
 	}
 }
 
 func (v *validator) registeredPlugins(entries []marketplacePlugin) map[string]struct{} {
 	registered := map[string]struct{}{}
 	for _, entry := range entries {
-		if entry.Name != "" {
+		// External plugins live in another repository: nothing local to validate.
+		if entry.Name != "" && !entry.External {
 			registered[entry.Name] = struct{}{}
 		}
 	}

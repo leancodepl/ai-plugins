@@ -11,7 +11,7 @@ LeanCode Flutter plugin for [Marionette MCP](https://github.com/leancodepl/mario
 
 ## Marionette vs Patrol
 
-| | Marionette (this plugin) | Patrol ([`flutter-patrol`](../flutter-patrol/)) |
+| | Marionette (this plugin) | Patrol ([`flutter-patrol`](https://github.com/leancodepl/patrol)) |
 |---|---|---|
 | Purpose | Runtime exploration, smoke verification | Deterministic E2E test suites |
 | Runs against | Live `flutter run` debug session | `patrol develop` / `patrol test` |
@@ -124,5 +124,5 @@ Marionette relies on Flutter's VM Service and is intended for a live `flutter ru
 
 ## Related plugins
 
-- [`flutter-patrol`](../flutter-patrol/) — deterministic E2E testing with Patrol MCP
+- [`flutter-patrol`](https://github.com/leancodepl/patrol) — deterministic E2E testing with Patrol MCP
 - [`flutter-ui`](../flutter-ui/) — design-system guidance (relevant when configuring `isInteractiveWidget` for custom widgets)
