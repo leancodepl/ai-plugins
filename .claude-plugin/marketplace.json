@@ -130,15 +130,6 @@
         "./skills/flutter-read-logs-usage",
         "./skills/read-logs"
       ]
-    },
-    {
-      "name": "lean-a11y-vo-log",
-      "source": "./plugins/lean-a11y-vo-log",
-      "description": "Capture a timestamped transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report via /lean-a11y-vo-log.",
-      "skills": [
-        "./skills/lean-a11y-vo-log-usage",
-        "./skills/lean-a11y-vo-log"
-      ]
     }
   ]
 }
