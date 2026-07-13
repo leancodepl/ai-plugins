@@ -13,6 +13,23 @@ LeanCode's shared AI plugins for Claude Code, focused on Flutter development.
 
 Claude Code also documents support for per-plugin `agents/`, `commands/`, and `hooks/` directories. No plugin in this repo currently uses them — treat them as not-yet-exercised.
 
+## Externally sourced plugins
+
+A plugin whose content is owned by another repository is registered in `.claude-plugin/marketplace.json` with an object source and `strict: false`:
+
+```json
+{
+  "name": "flutter-patrol",
+  "source": { "source": "github", "repo": "leancodepl/patrol" },
+  "strict": false,
+  "skills": ["./skills/patrol-write-test", "./skills/patrol-test-architecture"]
+}
+```
+
+The external repo is the single source of truth — there is no `plugins/<name>/` directory and no copy of its content here; do not vendor one. The validator skips external entries (no local directory to check); the `claude plugin validate` CI step covers the entry's schema.
+
+Currently external: `flutter-patrol` (from [leancodepl/patrol](https://github.com/leancodepl/patrol), which owns all Patrol AI support).
+
 ## Working conventions
 
 - Keep plugins self-contained and independently installable.

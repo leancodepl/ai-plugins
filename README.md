@@ -53,7 +53,7 @@ To have Claude Code prompt collaborators to install the marketplace automaticall
 
 Most plugins are pure rules and skills with no setup. A few need one-time tooling or MCP setup — finish it from the plugin's `README.md`:
 
-- [`flutter-patrol`](plugins/flutter-patrol/) - Patrol CLI and Patrol MCP
+- [`flutter-patrol`](https://github.com/leancodepl/patrol) - Patrol CLI and Patrol MCP
 - [`flutter-marionette`](plugins/flutter-marionette/) - Marionette MCP and app-side binding
 
 ## Available plugins
@@ -80,7 +80,7 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 ### UI and verification
 
 - [`flutter-ui`](plugins/flutter-ui/) - design-system-driven UI, loading/error patterns, localized presentation text, and UI implementation checklists
-- [`flutter-patrol`](plugins/flutter-patrol/) - Patrol test architecture, key conventions, and Patrol MCP workflow for AI-assisted E2E work
+- [`flutter-patrol`](https://github.com/leancodepl/patrol) - Patrol E2E test skills (write-test workflow, test architecture, key conventions, Patrol MCP), sourced directly from the Patrol repository's `skills/` — the single source of truth for Patrol AI support
 - [`flutter-marionette`](plugins/flutter-marionette/) - runtime interaction with a live debug app through Marionette MCP for exploration, smoke checks, and UI debugging
 - [`flutter-read-logs`](plugins/flutter-read-logs/) - read the running app's latest `flutter run` logs as on-demand context via `/read-logs`
 

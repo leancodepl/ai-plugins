@@ -108,10 +108,15 @@
     },
     {
       "name": "flutter-patrol",
-      "source": "./plugins/flutter-patrol",
-      "description": "LeanCode Patrol E2E testing guidance (Modules/System/ApiClients, keys conventions) plus Patrol MCP setup for AI-assisted test development.",
+      "source": {
+        "source": "github",
+        "repo": "leancodepl/patrol"
+      },
+      "strict": false,
+      "description": "Patrol E2E testing skills (write-test workflow and Modules/System/ApiClients architecture with keys conventions), sourced directly from the Patrol repository.",
       "skills": [
-        "./skills/flutter-patrol-usage"
+        "./skills/patrol-write-test",
+        "./skills/patrol-test-architecture"
       ]
     },
     {
