@@ -1,9 +1,9 @@
 ---
-name: a11y-vo-log
-description: Capture a text transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report — a text alternative to screen recording. Claude spawns a dedicated Terminal running the logger, the dev enables VoiceOver and does the flow, then Claude reads the log and turns the announcement timeline into a bug report. Project-agnostic (any macOS app: web, native, Flutter). Trigger on "/a11y-vo-log", "log VoiceOver", "capture VO speech", "record what the screen reader says".
+name: lean-a11y-vo-log
+description: Capture a text transcript of everything VoiceOver speaks (and each keyboard nav gesture) during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report — a text alternative to screen recording. Claude spawns a dedicated Terminal running the logger, the dev enables VoiceOver and does the flow, then Claude reads the log and turns the announcement timeline into a bug report. Project-agnostic (any macOS app: web, native, Flutter). Trigger on "/lean-a11y-vo-log", "log VoiceOver", "capture VO speech", "record what the screen reader says".
 ---
 
-# a11y-vo-log — VoiceOver speech logging (developer-in-the-loop)
+# lean-a11y-vo-log — VoiceOver speech logging (developer-in-the-loop)
 
 Turns a manual VoiceOver session into a timestamped transcript, then diagnoses it.
 The dev drives VoiceOver by hand; every spoken phrase (and every nav gesture, if
@@ -20,7 +20,7 @@ to explain it — just point the dev at the README's *Setup* section if a check 
 ### 1. Start the logger (Claude does this)
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/skills/a11y-vo-log/scripts/start_log_terminal.sh" ~/vo_log.txt
+bash "${CLAUDE_PLUGIN_ROOT}/skills/lean-a11y-vo-log/scripts/start_log_terminal.sh" ~/vo_log.txt
 ```
 
 The script **starts VoiceOver itself** if it's off, then opens a new Terminal window

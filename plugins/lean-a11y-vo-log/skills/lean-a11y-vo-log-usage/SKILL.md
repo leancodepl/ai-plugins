@@ -1,9 +1,9 @@
 ---
-name: a11y-vo-log-usage
-description: Explain what the `a11y-vo-log` plugin does and how to use it. Use when the user invokes `/a11y-vo-log-usage`, asks what this plugin covers, or needs help with VoiceOver speech logging, gesture capture, or the one-time setup.
+name: lean-a11y-vo-log-usage
+description: Explain what the `lean-a11y-vo-log` plugin does and how to use it. Use when the user invokes `/lean-a11y-vo-log-usage`, asks what this plugin covers, or needs help with VoiceOver speech logging, gesture capture, or the one-time setup.
 ---
 
-# a11y-vo-log Usage
+# lean-a11y-vo-log Usage
 
 ## How to respond
 
@@ -11,7 +11,7 @@ description: Explain what the `a11y-vo-log` plugin does and how to use it. Use w
   the plugin is for and when it beats a screen recording.
 - Point to the one-time setup in the plugin `README.md` (VoiceOver AppleScript
   control, Automation permission, optional Karabiner gesture rules).
-- If the user already has a concrete logging task, hand off to the `a11y-vo-log`
+- If the user already has a concrete logging task, hand off to the `lean-a11y-vo-log`
   skill and do the work.
 - Do not reply with filler like "skill loaded" or "ready for the task" before
   explaining the plugin.
@@ -39,12 +39,13 @@ flow — without recording and re-watching a video.
 One-time, per machine — see the plugin `README.md`:
 
 1. VoiceOver → allow AppleScript control.
-2. Grant Automation permission to the process running Claude Code (Terminal +
-   VoiceOver).
-3. (For gesture lines) import the bundled Karabiner rules pointing at a stable copy
-   of `vo_gesture.sh`.
+2. Grant Automation permission to the app running Claude Code (whatever terminal
+   that is) so it can control VoiceOver + Terminal.
+3. **Dependency for `GESTURE` lines:** install Karabiner-Elements and import the
+   bundled rules (pointed at a stable copy of `vo_gesture.sh`). Speech logging works
+   without it; keyboard-gesture logging does not.
 
 ## Example usage
 
-- `/a11y-vo-log` — Claude opens the logging Terminal, you run your flow, then say
+- `/lean-a11y-vo-log` — Claude opens the logging Terminal, you run your flow, then say
   "read the log" and Claude writes up the bugs.

@@ -1,4 +1,4 @@
-# a11y-vo-log
+# lean-a11y-vo-log
 
 Capture a timestamped **text transcript of everything VoiceOver speaks** during a
 manual screen-reader session on macOS — and, optionally, each keyboard nav gesture
@@ -12,17 +12,17 @@ file:line → fix` chains. Project-agnostic: it logs whatever macOS app is front
 
 ## Included assets
 
-- `skills/a11y-vo-log/SKILL.md` — the workflow (spawn logger → dev runs flow → Claude
+- `skills/lean-a11y-vo-log/SKILL.md` — the workflow (spawn logger → dev runs flow → Claude
   diagnoses) plus the announcement-diagnosis table
-- `skills/a11y-vo-log-usage/SKILL.md` — routing skill: what the plugin does and when to
+- `skills/lean-a11y-vo-log-usage/SKILL.md` — routing skill: what the plugin does and when to
   reach for it
-- `skills/a11y-vo-log/scripts/vo_log.sh` — the poller: reads VoiceOver's "last phrase"
+- `skills/lean-a11y-vo-log/scripts/vo_log.sh` — the poller: reads VoiceOver's "last phrase"
   ~6×/s (deduped) and appends `VO` lines
-- `skills/a11y-vo-log/scripts/start_log_terminal.sh` — opens the dedicated logging
+- `skills/lean-a11y-vo-log/scripts/start_log_terminal.sh` — opens the dedicated logging
   Terminal window running `vo_log.sh`
-- `skills/a11y-vo-log/scripts/vo_gesture.sh` — appends a `GESTURE` line; called by
+- `skills/lean-a11y-vo-log/scripts/vo_gesture.sh` — appends a `GESTURE` line; called by
   Karabiner on each VoiceOver nav combo
-- `skills/a11y-vo-log/assets/karabiner_vo_gesture_logger.json` — Karabiner rules
+- `skills/lean-a11y-vo-log/assets/karabiner_vo_gesture_logger.json` — Karabiner rules
   template (the `__VO_GESTURE_SH__` placeholder is stamped during setup)
 
 ## How it works
@@ -50,11 +50,13 @@ AppleScript"*.
 
 ### 2. Grant Automation permission
 
-The process running Claude Code needs to control **VoiceOver** and **Terminal**. The
-first run may prompt *"… wants to control Terminal / VoiceOver"* → **Allow**. If it
-errors instead, add them under System Settings → Privacy & Security → Automation.
+Whatever app is running Claude Code — Terminal, iTerm, VS Code, … — needs permission
+to control **VoiceOver** and **Terminal.app** (the logger always opens its window in
+Terminal.app, regardless of where Claude runs). The first run may prompt *"<that app>
+wants to control Terminal / VoiceOver"* → **Allow**. If it errors instead, add the
+entries under System Settings → Privacy & Security → Automation.
 
-That is enough for **speech logging**. `/a11y-vo-log` now works — you just won't get
+That is enough for **speech logging**. `/lean-a11y-vo-log` now works — you just won't get
 `GESTURE` lines until step 3.
 
 ### 3. Keyboard-gesture logging (Karabiner-Elements)
@@ -63,7 +65,7 @@ This is what adds the `GESTURE` lines (and lets Claude spot silent focus moves).
 Install [Karabiner-Elements](https://karabiner-elements.pqrs.org/) first — that
 install is the only manual step. The rest below (copy the logger to a stable spot,
 stamp the rules) is plain shell, so **if you trust Claude, just ask it to do this
-setup for you** — paste this section or say *"do the a11y-vo-log Karabiner setup"*
+setup for you** — paste this section or say *"do the lean-a11y-vo-log Karabiner setup"*
 and it runs the commands. It only writes to `~/.local/bin/` and
 `~/.config/karabiner/`; you still enable the rule yourself in the Karabiner UI at
 the end. Prefer to do it by hand? Wire the bundled rules to a **stable** copy of the
@@ -72,8 +74,8 @@ break Karabiner:
 
 ```bash
 # Resolve the installed plugin's files (latest version wins)
-GEST_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-vo-log/skills/a11y-vo-log/scripts/vo_gesture.sh' | sort | tail -1)"
-RULES_SRC="$(find ~/.claude/plugins/cache -path '*/a11y-vo-log/skills/a11y-vo-log/assets/karabiner_vo_gesture_logger.json' | sort | tail -1)"
+GEST_SRC="$(find ~/.claude/plugins/cache -path '*/lean-a11y-vo-log/skills/lean-a11y-vo-log/scripts/vo_gesture.sh' | sort | tail -1)"
+RULES_SRC="$(find ~/.claude/plugins/cache -path '*/lean-a11y-vo-log/skills/lean-a11y-vo-log/assets/karabiner_vo_gesture_logger.json' | sort | tail -1)"
 
 # a) Copy the gesture logger to a stable location that survives plugin updates
 mkdir -p ~/.local/bin
@@ -95,7 +97,7 @@ the *"VoiceOver gesture logger"* rules.
 ## Usage
 
 ```
-/a11y-vo-log
+/lean-a11y-vo-log
 ```
 
 Claude opens the logging Terminal (starting VoiceOver for you if it's off), you run

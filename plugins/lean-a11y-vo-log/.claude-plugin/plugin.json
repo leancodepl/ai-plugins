@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
-  "name": "a11y-vo-log",
+  "name": "lean-a11y-vo-log",
   "displayName": "A11y VoiceOver Log",
   "description": "Capture a timestamped transcript of everything VoiceOver speaks — and each keyboard nav gesture — during a manual screen-reader session on macOS, then diagnose it into an accessibility bug report. A text alternative to screen recording.",
   "version": "0.1.0",
