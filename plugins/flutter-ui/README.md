@@ -9,6 +9,10 @@ Contains the UI rule and helper skills for presentation-layer work:
 - `skills/ui/SKILL.md` - workflow for implementing or refactoring feature UI
 - `skills/ui/reference.md` - short UI checklist
 
+## Agent
+
+- `@flutter-ui` - agent for substantial, multi-step UI work (design-system-driven pages, shared loading/error patterns, presentation-layer state). It preloads the `flutter-ui-usage` skill and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-ui-usage` instead.
+
 ## Example usage
 
 - `/flutter-ui-usage` - get a short explanation of what this plugin does and which asset to use next

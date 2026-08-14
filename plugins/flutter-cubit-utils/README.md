@@ -10,6 +10,10 @@ Contains the cubit-utils rules and examples:
 - `skills/flutter-cubit-utils-usage/references/cubit-action.md` — action/command cubit examples
 - `skills/flutter-cubit-utils-usage/SKILL.md` — entry point for this plugin
 
+## Agent
+
+- `@flutter-cubit-utils` — agent for substantial, multi-step base-cubit work (choosing a base class, scaffolding list/details/action cubits, migrating ad-hoc cubits). It preloads the `flutter-cubit-utils-usage` skill and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-cubit-utils-usage` instead.
+
 ## Example usage
 
 - `/flutter-cubit-utils-usage` — get a short explanation of what this plugin does and which asset to use next

@@ -9,6 +9,10 @@ Contains the CQRS rules and data-access assets:
 - `skills/data-access/SKILL.md` — implement the data access layer
 - `skills/data-access/reference.md` — quick reference for CQRS calls, contracts, repositories, and cubit integration
 
+## Agent
+
+- `@flutter-cqrs` — agent for substantial, multi-step CQRS work (implementing queries/commands, repository-boundary decisions, refactoring toward generated contracts). It preloads the `flutter-cqrs-usage` skill and applies LeanCode conventions end to end. For quick inline questions, use `/flutter-cqrs-usage` instead.
+
 ## Example usage
 
 - `/flutter-cqrs-usage` — get a short explanation of what this plugin does and which asset to use next
