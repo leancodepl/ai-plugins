@@ -1,7 +1,7 @@
 ---
 name: read-logs
 description: Read the running Flutter app's latest run logs as context for a task — an auth flow, a crash, a race, "why did X happen at runtime". Use when the user invokes `/read-logs`, asks why the app behaved a certain way during a run, or wants the most recent run's logs as evidence. Reads only; never commits.
-argument-hint: "[what to look for in the run logs]"
+argument-hint: "[what to look for — a crash, a flow, event ordering, \"why did X happen\"]"
 ---
 
 # Read run logs
@@ -31,8 +31,10 @@ skill auto-detects which:
 **This skill loads logs as CONTEXT — it is not a standalone analyzer.** Don't summarize the
 run, surface all errors, or volunteer a diagnosis on your own. Read the logs so you have
 them, then carry out the task you were invoked with (e.g. "why did login flash", "does auth
-reach the API"). If no task was given, confirm the logs are loaded and ask what they want —
-don't analyze unprompted.
+reach the API"). If no task was given, confirm the logs are loaded and ask what they
+want, naming what can follow the command so they don't have to guess — a crash or
+exception, a flow to trace ("does auth reach the API"), event ordering / a race, a specific
+screen or feature, or a plain "why did X happen". Don't analyze unprompted.
 
 ---
 

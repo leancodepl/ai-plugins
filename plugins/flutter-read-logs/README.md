@@ -127,8 +127,19 @@ README. This `README.md` is the canonical copy — keep the two in sync when cha
 
 ## Example usage
 
-- `/read-logs <task>` — read the latest run's logs as context for `<task>`.
-- `/flutter-read-logs-usage` — short explanation of what this plugin does and how to set it up.
+`/read-logs` takes a **free-form task** — whatever you want the run investigated against.
+There are no flags; anything you'd ask a colleague looking over your shoulder works:
+
+| What you're after | Example |
+| --- | --- |
+| A crash or exception | `/read-logs why did it crash on startup` |
+| A flow to trace | `/read-logs does the auth flow reach the API` |
+| Ordering / a race | `/read-logs in what order did the profile events fire` |
+| A screen or feature | `/read-logs anything odd in the checkout screen` |
+| Not sure yet | `/read-logs` — loads the run and asks what you're after |
+
+The same list is in the slash-command hint and in `/flutter-read-logs-usage`, the short
+explanation of what this plugin does and how to set it up.
 
 ## Related plugins
 

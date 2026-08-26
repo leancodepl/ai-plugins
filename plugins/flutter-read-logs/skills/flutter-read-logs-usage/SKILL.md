@@ -10,6 +10,7 @@ description: Explain what the `flutter-read-logs` plugin does and how to use it.
 - If the user invoked this skill without a concrete task, explain what the plugin does and when to reach for `/read-logs`.
 - If they need setup, point them at this plugin's `README.md` (the canonical setup home) — VS Code/Cursor `dapLogFile`, or the Zed/`script` task.
 - If they already have a concrete log-reading task, briefly explain the fit and then run `/read-logs`.
+- When explaining `/read-logs`, say what can follow it (see "What to put after the command") — the argument is free-form, and devs otherwise assume it takes no argument.
 - Do not reply with filler like "skill loaded" or "ready for the task" before explaining the plugin.
 
 ## What this plugin does
@@ -17,6 +18,17 @@ description: Explain what the `flutter-read-logs` plugin does and how to use it.
 - Lets Claude read the running app's latest `flutter run` output as on-demand context, via `/read-logs <task>` — instead of pasting terminal logs.
 - Captures `flutter run` output per-project to `/tmp/flutter-<repo>.log` (worktree-stable via `--git-common-dir`, overwritten each launch). Two formats, auto-detected: Zed `script` transcript and VS Code/Cursor `dapLogFile` (DAP).
 - Reads **task-led** — reads the whole short run, or investigates a long one against your question (errors, event ordering, a feature, …) — flags stale runs, and on first use guides editor setup.
+
+## What to put after the command
+
+`/read-logs <task>` takes a **free-form task** — whatever you want the run investigated
+against. It's not a fixed set of flags. Common shapes:
+
+- **A crash or exception** — `/read-logs why did it crash on startup`
+- **A flow to trace** — `/read-logs does the auth flow reach the API`
+- **Ordering / a race** — `/read-logs in what order did the profile events fire`
+- **A screen or feature** — `/read-logs anything odd in the checkout screen`
+- **Nothing** — `/read-logs` alone loads the run and asks what you're after.
 
 ## When to use it
 

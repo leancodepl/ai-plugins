@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- `/read-logs` now states upfront what can follow the command: a concrete `argument-hint`
+  in the slash-command menu, an examples table in the `README.md`, a "What to put after the
+  command" section in `flutter-read-logs-usage`, and a bare `/read-logs` that names the
+  options instead of asking an open question.
+
 ## 0.1.0
 
 - Initial `flutter-read-logs` plugin.
