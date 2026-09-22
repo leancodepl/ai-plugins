@@ -75,7 +75,7 @@ Most plugins are pure rules and skills with no setup. A few need one-time toolin
 - [`flutter-bloc`](plugins/flutter-bloc/) - BLoC/Cubit conventions, state modeling, presentation side effects, `bloc_presentation`, and `flutter_hooks`
 - [`flutter-cubit-utils`](plugins/flutter-cubit-utils/) - `QueryCubit`, `PaginatedQueryCubit`, `RequestCubit`, and recipes for lists, details, and actions
 - [`flutter-cqrs`](plugins/flutter-cqrs/) - CQRS contracts, repositories, direct `cqrs.run` / `cqrs.get` usage, and CQRS-backed cubits
-- [`flutter-forms`](plugins/flutter-forms/) - `leancode_forms`, validation behavior, naming conventions, and form cubit patterns
+- [`flutter-forms`](https://github.com/leancodepl/advanced_forms) - `advanced_forms` form and field controllers, validation (sync, async, cross-field), and submit handling, sourced directly from the package repository's `skills/` — the single source of truth for `advanced_forms` AI support
 
 ### UI and verification
 

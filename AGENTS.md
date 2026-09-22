@@ -28,7 +28,7 @@ A plugin whose content is owned by another repository is registered in `.claude-
 
 The external repo is the single source of truth — there is no `plugins/<name>/` directory and no copy of its content here; do not vendor one. The validator skips external entries (no local directory to check); the `claude plugin validate` CI step covers the entry's schema.
 
-Currently external: `flutter-patrol` (from [leancodepl/patrol](https://github.com/leancodepl/patrol), which owns all Patrol AI support).
+Currently external: `flutter-patrol` (from [leancodepl/patrol](https://github.com/leancodepl/patrol), which owns all Patrol AI support) and `flutter-forms` (from [leancodepl/advanced_forms](https://github.com/leancodepl/advanced_forms), which owns all `advanced_forms` AI support).
 
 ## Working conventions
 
