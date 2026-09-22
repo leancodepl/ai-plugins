@@ -82,10 +82,14 @@
     },
     {
       "name": "flutter-forms",
-      "source": "./plugins/flutter-forms",
-      "description": "LeanCode Flutter forms guidance based on leancode_forms, form cubits, and validation behavior.",
+      "source": {
+        "source": "github",
+        "repo": "leancodepl/advanced_forms"
+      },
+      "strict": false,
+      "description": "Flutter forms skills built on advanced_forms (form and field controllers, validation modes, and submit/server-error handling), sourced directly from the package repository.",
       "skills": [
-        "./skills/flutter-forms-usage"
+        "./skills/advanced_forms-build-forms"
       ]
     },
     {
