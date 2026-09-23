@@ -7,6 +7,8 @@ const (
 	skillsDir  = "skills"
 	skillFile  = "SKILL.md"
 
+	frontmatterOpen = "---\n"
+
 	marketplacePath    = ".claude-plugin/marketplace.json"
 	pluginManifestPath = ".claude-plugin/plugin.json"
 )
