@@ -3,7 +3,7 @@
   "name": "flutter-leancode-architecture",
   "displayName": "Flutter LeanCode Architecture",
   "description": "LeanCode Flutter architecture standards for project structure, error handling, and logging.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "LeanCode"
   },
