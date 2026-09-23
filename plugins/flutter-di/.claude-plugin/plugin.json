@@ -3,7 +3,7 @@
   "name": "flutter-di",
   "displayName": "Flutter DI",
   "description": "LeanCode Flutter dependency injection guidance using the provider package (page-scoped and global providers, AsyncLoader).",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "LeanCode"
   },
