@@ -17,7 +17,7 @@ LeanCode Flutter plugin for [Marionette MCP](https://github.com/leancodepl/mario
 | Runs against | Live `flutter run` debug session | `patrol develop` / `patrol test` |
 | Test files | None; the agent drives the app | Dart test files in `patrol_test/` |
 | Best for | Iterating on a feature, smoke after refactor | Regression-proof suites in CI |
-| Build mode | Debug only | Debug + release |
+| Build mode | Debug and profile | Debug + release |
 
 Both plugins can coexist; they solve different parts of the AI-assisted testing workflow.
 
@@ -106,17 +106,29 @@ flutter run
 
 Copy the VM service URI from the run output (format: `ws://127.0.0.1:PORT/ws`). In your AI agent, call the `connect` tool with that URI.
 
+`connect` checks that `marionette_mcp` and the app's `marionette_flutter` are the same version and fails if they differ. After upgrading `marionette_flutter`, activate the matching server too: `dart pub global activate marionette_mcp <version>`.
+
 ## Log collection
 
-`get_logs` requires a configured `LogCollector`.
+`get_logs` needs a `LogCollector`, passed as `MarionetteConfiguration(logCollector: ...)`. The collectors for the two common logging packages ship as separate packages:
 
-- Use `LoggingLogCollector()` for apps using the `logging` package.
-- Use `LoggerLogCollector()` for apps using the `logger` package.
-- Use `PrintLogCollector()` for custom logging setups.
+| Your app logs with | Add to the app | Collector |
+| --- | --- | --- |
+| [`logging`](https://pub.dev/packages/logging) | `flutter pub add marionette_logging` | `LoggingLogCollector()` from `package:marionette_logging/marionette_logging.dart` |
+| [`logger`](https://pub.dev/packages/logger) | `flutter pub add marionette_logger` | `LoggerLogCollector()` from `package:marionette_logger/marionette_logger.dart`. Also add it to your `Logger`'s outputs. |
+| Anything else | Nothing, it ships in `marionette_flutter` | `PrintLogCollector()`. Call `collector.addLog(message)` wherever your logs flow. |
+
+```dart
+MarionetteBinding.ensureInitialized(
+  MarionetteConfiguration(logCollector: LoggingLogCollector()),
+);
+```
+
+`get_logs` returns the logs since app start or the last hot reload. Without a collector it explains how to enable one. Upstream docs: [Log Collection](https://github.com/leancodepl/marionette_mcp/blob/main/docs/logging.md).
 
 ## Build-mode constraint
 
-Marionette relies on Flutter's VM Service and is intended for a live `flutter run` session. It does not work in release builds. Use Patrol for release-mode automation.
+Marionette relies on Flutter's VM Service, so it works in debug and profile builds, not in release builds. The `kDebugMode` guard above enables it in debug only; use `!kReleaseMode` to include profile builds. Use Patrol for release-mode automation.
 
 ## Example usage
 

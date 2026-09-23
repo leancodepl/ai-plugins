@@ -3,7 +3,7 @@
   "name": "flutter-marionette",
   "displayName": "Flutter Marionette",
   "description": "LeanCode Marionette MCP setup and usage — runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "LeanCode"
   },

@@ -1,6 +1,6 @@
 ---
 name: flutter-marionette-usage
-description: Explain what the `flutter-marionette` plugin does and how to use it. Use when the user invokes `/flutter-marionette-usage`, asks what this plugin covers, or needs help with Marionette MCP setup, runtime exploration, or custom widget configuration.
+description: Explain what the `flutter-marionette` plugin does and how to drive a running Flutter app through Marionette MCP. Use when the user invokes `/flutter-marionette-usage`, asks what this plugin covers, wants Claude to tap, type, scroll, take screenshots or smoke-test a running Flutter app, or needs help with Marionette MCP setup, `get_logs`, or custom widget configuration.
 ---
 
 # Marionette Usage
