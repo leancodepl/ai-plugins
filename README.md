@@ -101,6 +101,12 @@ See [Discover and install plugins](https://code.claude.com/docs/en/discover-plug
 
 `flutter-forms` and `flutter-patrol` install straight from the repositories of the packages they cover, so they stay in step with each release. Each plugin's `README.md` covers its setup.
 
+### Judgment and review
+
+| Plugin | Covers | Setup |
+| ------ | ------ | ----- |
+| [`lean-jev`](plugins/lean-jev/) | Hands a judgment call to Jev, TypeSafe's System One model, and frames it the way Jev needs it framed: typed questions, numbers instead of prose, cheap enough to judge every item in a list | A TypeSafe API key |
+
 ## Contributing
 
 Fixes and new Flutter plugins are welcome. CI runs every check, so you need nothing installed locally. [`CONTRIBUTING.md`](CONTRIBUTING.md) has the steps, and [`AGENTS.md`](AGENTS.md) has the plugin conventions.

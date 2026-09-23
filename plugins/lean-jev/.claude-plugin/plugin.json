@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "lean-jev",
+  "displayName": "Lean Jev",
+  "description": "Ask Jev, TypeSafe's System One model, for calibrated typed judgments: yes/no probabilities, rubric scores, picks from a fixed set. Ships a stdlib-only Python client; an API key is the only prerequisite.",
+  "version": "0.2.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "jev",
+    "typesafe",
+    "judgment",
+    "scoring",
+    "triage"
+  ],
+  "skills": "./skills/"
+}

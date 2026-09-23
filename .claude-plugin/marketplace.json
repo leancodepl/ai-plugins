@@ -139,6 +139,15 @@
         "./skills/flutter-read-logs-usage",
         "./skills/read-logs"
       ]
+    },
+    {
+      "name": "lean-jev",
+      "source": "./plugins/lean-jev",
+      "description": "Ask Jev, TypeSafe's System One model, for calibrated typed judgments: yes/no probabilities, rubric scores, picks from a fixed set. Ships a stdlib-only Python client; an API key is the only prerequisite.",
+      "skills": [
+        "./skills/lean-jev-usage",
+        "./skills/ask-jev"
+      ]
     }
   ]
 }
