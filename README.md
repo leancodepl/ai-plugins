@@ -95,7 +95,7 @@ See [Discover and install plugins](https://code.claude.com/docs/en/discover-plug
 | Plugin | Covers | Setup |
 | ------ | ------ | ----- |
 | [`flutter-ui`](plugins/flutter-ui/) | Design-system-driven UI, loading and error states, localized text, implementation checklists | None |
-| [`flutter-patrol`](https://github.com/leancodepl/patrol) | Writing Patrol E2E tests, test architecture and key conventions | Patrol CLI and Patrol MCP |
+| [`flutter-patrol`](https://github.com/leancodepl/patrol) | Setting up Patrol, writing E2E tests, test architecture and key conventions | Patrol CLI and Patrol MCP |
 | [`flutter-marionette`](plugins/flutter-marionette/) | Driving a live debug app through Marionette MCP to explore, smoke-check and debug UI | Marionette MCP and an app-side binding |
 | [`flutter-read-logs`](plugins/flutter-read-logs/) | `/read-logs` gives Claude the logs of your last `flutter run` | One editor setting |
 

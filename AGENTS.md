@@ -22,7 +22,7 @@ A plugin whose content is owned by another repository is registered in `.claude-
   "name": "flutter-patrol",
   "source": { "source": "github", "repo": "leancodepl/patrol" },
   "strict": false,
-  "skills": ["./skills/patrol-write-test", "./skills/patrol-test-architecture"]
+  "skills": ["./skills/patrol-setup", "./skills/patrol-write-test", "./skills/patrol-test-architecture"]
 }
 ```
 

@@ -117,8 +117,9 @@
         "repo": "leancodepl/patrol"
       },
       "strict": false,
-      "description": "Patrol E2E testing skills (write-test workflow and Modules/System/ApiClients architecture with keys conventions), sourced directly from the Patrol repository.",
+      "description": "Patrol E2E testing skills (first-time Android setup, write-test workflow, and Modules/System/ApiClients architecture with keys conventions), sourced directly from the Patrol repository.",
       "skills": [
+        "./skills/patrol-setup",
         "./skills/patrol-write-test",
         "./skills/patrol-test-architecture"
       ]
