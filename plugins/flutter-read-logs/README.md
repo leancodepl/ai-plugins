@@ -21,7 +21,7 @@ loader, not an auto-analyzer.
 Each project logs to its own file, `/tmp/flutter-<repo>.log`, where `<repo>` is derived
 from the shared `.git` (`git rev-parse --git-common-dir`), so the main checkout and every
 git worktree resolve to the **same** file. The file is overwritten on every launch (always
-the latest run) and lives in `/tmp`: outside the repo, nothing to gitignore, cleared on
+the latest run; with VS Code or Cursor, a test run started from the editor counts too) and lives in `/tmp`: outside the repo, nothing to gitignore, cleared on
 reboot. `/read-logs` derives the path at runtime and auto-detects the format.
 
 The only per-developer step, done **once**, is making your editor write that file. If you

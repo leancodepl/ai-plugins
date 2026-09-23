@@ -3,7 +3,7 @@
   "name": "flutter-read-logs",
   "displayName": "Flutter Read Logs",
   "description": "Read the running Flutter app's latest run logs as on-demand context — inspect what a flutter run already produced (including build errors and crashes), no live connection or instrumentation. Surfaces the relevant slice to Claude via /read-logs.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "LeanCode"
   },

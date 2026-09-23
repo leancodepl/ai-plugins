@@ -1,6 +1,6 @@
 ---
 name: read-logs
-description: Read the running Flutter app's latest run logs as context for a task — an auth flow, a crash, a race, "why did X happen at runtime". Use when the user invokes `/read-logs`, asks why the app behaved a certain way during a run, or wants the most recent run's logs as evidence. Reads only; never commits.
+description: Read the running Flutter app's latest run logs as context for a task — an auth flow, a crash, a race, "why did X happen at runtime". Use when the user invokes `/read-logs`, asks why the app behaved a certain way during a run, or wants the most recent run's logs as evidence. Reads the log; first-run setup edits only local editor config and never commits.
 argument-hint: "[what to look for in the run logs]"
 ---
 
@@ -10,8 +10,8 @@ argument-hint: "[what to look for in the run logs]"
 > this skill works.** Run logs routinely contain auth/refresh/push tokens, emails, and
 > customer data; the moment you read one, that data is sent to the model. Invoking
 > `/read-logs` means **consciously accepting** that this captured run gets sent. Don't run
-> it against production or real-customer data unless you've accepted that risk. (See the
-> plugin README for redaction options and the full data-handling note.)
+> it against production or real-customer data unless you've accepted that risk. (Redaction is
+> not built yet; see the plugin README for the full data-handling note.)
 
 Load the running app's `flutter run` output as context for the task the user gave when
 invoking this skill. Editor setup (making the app write the log file) is documented in this
@@ -21,7 +21,8 @@ their editor and not reading GitHub. Keep the two in sync.
 
 Logs are captured per-project to `/tmp/flutter-<repo>.log` (`<repo>` derived from the shared
 `.git` via `--git-common-dir`, so the main checkout and every git worktree resolve to the
-*same* file), overwritten on every launch (always the latest run), living in `/tmp` —
+*same* file), overwritten on every launch (always the latest debug session; with VS Code or
+Cursor that includes a test run started from the editor), living in `/tmp` —
 outside the repo, nothing to gitignore. Two capture formats exist depending on editor; the
 skill auto-detects which:
 - **Zed / terminal run task:** raw `script` TTY transcript (plain text, ANSI codes).
@@ -69,7 +70,9 @@ fi
 ## Step 2 — Read the run (format-aware, task-led)
 
 The file holds **only the most recent run** (it's overwritten on every launch), so there
-are no older runs to scroll past and no need for a flat tail. First normalize it to plain
+are no older runs to scroll past and no need for a flat tail. With VS Code or Cursor, every
+Dart-Code debug session overwrites it, tests included: if the log shows a test run instead of
+the app, say so and ask the dev to relaunch the app. First normalize it to plain
 text, then read it with the **task as your lens** — not a fixed filter.
 
 **Normalize** (sniff the first lines for format) into a clean temp file you can page through:
@@ -83,11 +86,21 @@ if head -50 "$L" | grep -qE '\[DAP\]|"event"[[:space:]]*:[[:space:]]*"output"'; 
   # alternation; [[:space:]]* tolerates non-compact JSON.
   grep -E '"event"[[:space:]]*:[[:space:]]*"output"' "$L" | python3 -c '
 import json, sys
+import re
+OUT = re.compile(r"\"output\"\s*:\s*\"((?:[^\"\\]|\\.)*)")
 for line in sys.stdin:
     i = line.find("{")
     if i < 0: continue
     try: m = json.loads(line[i:])
-    except Exception: continue
+    except Exception:
+        # Dart-Code cuts lines longer than dart.maxLogLineLength and appends "…", which
+        # breaks the JSON. Keep the part of the output that survived and mark the cut.
+        g = OUT.search(line.rstrip("\n"))
+        if g:
+            try: s = json.loads("\"" + g.group(1) + "\"")
+            except Exception: s = g.group(1)
+            sys.stdout.write(s + " [truncated: raise dart.maxLogLineLength]\n")
+        continue
     if m.get("event") == "output":
         sys.stdout.write(m.get("body", {}).get("output", ""))
 ' > "$CLEAN" 2>/dev/null
