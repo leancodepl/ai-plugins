@@ -36,5 +36,6 @@ description: Explain what the `flutter-analytics` plugin does and how to use it.
 
 - `references/analytics.md` - source-of-truth conventions for `*_ids.dart`.
 - `references/analytics-usage.md` - usage conventions in pages and widgets.
+- `references/analytics-wiring.md` - where `AnalyticsId` comes from, how tappable widgets register taps through `leancode_analytics_base`, and how page views are tracked through routes. Read it before writing or reviewing code that consumes IDs, or when the project has no `AnalyticsId` class yet.
 - `skills/scaffold-analytics-ids/SKILL.md` - scaffold or extend a feature IDs file.
 - `skills/review-analytics-coverage/SKILL.md` - audit analytics coverage in a file or feature.

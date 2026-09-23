@@ -31,7 +31,7 @@ Install only what the project actually uses. If unsure, install `lean-core` firs
 
 ## Installing the marketplace
 
-Each plugin has its own `/<plugin>-usage` skill (for example `/flutter-bloc-usage`). Reach for it once the plugin is installed.
+Each plugin stored in this repository has its own `/<plugin>-usage` skill (for example `/flutter-bloc-usage`); the externally sourced `flutter-forms` and `flutter-patrol` ship their own skills instead. Reach for it once the plugin is installed.
 
 Step-by-step install lives in the root `README.md` under "Install". Walk the user through it. The supported clients are listed in the root README's "Supported clients" section — read it; do not invent client names.
 

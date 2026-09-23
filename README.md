@@ -1,40 +1,40 @@
 # LeanCode AI Plugins
 
-LeanCode's shared AI plugins for Claude Code, focused on Flutter development.
+Claude Code plugins for Flutter: the conventions we use in production, and tools that let Claude see your running app. From the team behind [Patrol](https://github.com/leancodepl/patrol), [Marionette MCP](https://github.com/leancodepl/marionette_mcp) and [advanced_forms](https://github.com/leancodepl/advanced_forms).
 
-## Supported clients
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Works with Claude Code](https://img.shields.io/badge/works%20with-Claude%20Code-d97757.svg)](https://code.claude.com/docs/en/overview)
 
-- **Claude Code** — installed via the LeanCode plugin marketplace in Claude Code.
+## Before and after
+
+[`flutter-read-logs`](plugins/flutter-read-logs/) gives Claude the logs of your last `flutter run`. Same code, same model (Claude Sonnet 5), same question:
+
+> Tapping Cancel on the second booking does nothing. Why?
+
+|                | Without the plugin                                          | With `/read-logs`                                                                                      |
+| -------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Cause**      | Guessed from the code: "404/409/500, or a network hiccup"   | Read from the run: `409 cancellation_window_closed`, because the booking starts in under 24 hours      |
+| **Fix**        | A generic "Failed to cancel booking." snackbar              | Maps the 409 to the screen's error state, and suggests the server's reason: "Bookings can't be cancelled less than 24 hours before they start." |
+| **Tool calls** | 17                                                          | 6                                                                                                      |
+| **Cost**       | $0.50                                                       | $0.17                                                                                                  |
+
+<sub>Quotes are from real runs on 2026-09-23: a small Flutter app on macOS, and a local API outside the app's repository. An integration test tapped Cancel, and `/read-logs` read that run's log file. Writing the log file takes one editor setting, and `/read-logs` walks you through it.</sub>
 
 ## Install
 
-These plugins are distributed as a Claude Code **plugin marketplace**. Installing is a two-step process — add the marketplace once, then install the plugins you want. You do not need to clone this repo for day-to-day usage. For the full reference, see Claude Code's [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins) docs.
-
-### 1. Add the marketplace
-
-In Claude Code, add this repository as a marketplace by its GitHub `owner/repo`:
-
 ```
 /plugin marketplace add leancodepl/ai-plugins
+/plugin install flutter-read-logs@leancode-ai-plugins
 ```
 
-This registers the catalog so you can browse it — nothing is installed yet. (The full git URL works too: `/plugin marketplace add https://github.com/leancodepl/ai-plugins.git`.)
+Then run `/reload-plugins`. Each plugin installs on its own as `<plugin-name>@leancode-ai-plugins`, so take only the ones you agree with. The **Discover** tab in `/plugin` lists them all.
 
-### 2. Install the plugins you need
+New here? Install [`lean-core`](plugins/lean-core/) and run `/lean-core-usage`. Every plugin in this repository has a `/<plugin-name>-usage` skill, such as `/flutter-bloc-usage`, that explains what it covers.
 
-Browse the catalog with `/plugin` (the **Discover** tab), or install directly by name. Plugins install from the `leancode-ai-plugins` marketplace:
+<details>
+<summary>Team setup and the git URL</summary>
 
-```
-/plugin install flutter-bloc@leancode-ai-plugins
-```
-
-Pick only the plugins that match your project — each is independently installable. After installing, run `/reload-plugins` to activate them.
-
-> **Tip:** Install [`lean-core`](plugins/lean-core/) first and run `/lean-core-usage` for a guided tour of the whole marketplace.
-
-### Team setup (optional)
-
-To have Claude Code prompt collaborators to install the marketplace automatically, add it to your project's `.claude/settings.json`:
+To have Claude Code offer the marketplace to everyone on a project, add it to the project's `.claude/settings.json`:
 
 ```json
 {
@@ -49,53 +49,62 @@ To have Claude Code prompt collaborators to install the marketplace automaticall
 }
 ```
 
-### Per-plugin setup
+The git URL works as a source too:
 
-Most plugins are pure rules and skills with no setup. A few need one-time tooling or MCP setup — finish it from the plugin's `README.md`:
+```
+/plugin marketplace add https://github.com/leancodepl/ai-plugins.git
+```
 
-- [`flutter-patrol`](https://github.com/leancodepl/patrol) - Patrol CLI and Patrol MCP
-- [`flutter-marionette`](plugins/flutter-marionette/) - Marionette MCP and app-side binding
+See [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins) in the Claude Code docs.
+
+</details>
+
+## Supported clients
+
+**Claude Code** only.
 
 ## Available plugins
 
 ### Getting started
 
-- [`lean-core`](plugins/lean-core/) - marketplace entry point: `/lean-core-usage` explains what's available, `/lean-contribute` walks you through opening a PR
+| Plugin | Covers |
+| ------ | ------ |
+| [`lean-core`](plugins/lean-core/) | `/lean-core-usage` explains the marketplace; `/lean-contribute` walks you through a PR |
 
 ### Project foundations
 
-- [`flutter-leancode-architecture`](plugins/flutter-leancode-architecture/) - project structure, error handling, logging, plus architecture review and feature scaffolding skills
-- [`flutter-di`](plugins/flutter-di/) - `provider`-based dependency injection, page-root providers, `GlobalProviders`, and async initialization patterns
-- [`flutter-navigation`](plugins/flutter-navigation/) - `auto_route` and `go_router`, typed routes, route guards, route tree organization, and deep links
-- [`flutter-analytics`](plugins/flutter-analytics/) - analytics IDs, page/button tracking, plus skills to scaffold IDs and review coverage
-- [`flutter-localization`](plugins/flutter-localization/) - ARB workflows, POEditor, `poe2arb`, and `l10n(context)`
+| Plugin | Covers |
+| ------ | ------ |
+| [`flutter-leancode-architecture`](plugins/flutter-leancode-architecture/) | Project structure, error handling and logging; architecture review and feature scaffolding |
+| [`flutter-di`](plugins/flutter-di/) | `provider`-based dependency injection, page-root providers, `GlobalProviders`, async initialization |
+| [`flutter-navigation`](plugins/flutter-navigation/) | `auto_route` and `go_router`: typed routes, guards, route trees, deep links |
+| [`flutter-analytics`](plugins/flutter-analytics/) | Analytics IDs and page and tap tracking; scaffolds IDs and reviews coverage |
+| [`flutter-localization`](plugins/flutter-localization/) | ARB files, POEditor, `poe2arb` and `l10n(context)` |
 
 ### State and data
 
-- [`flutter-bloc`](plugins/flutter-bloc/) - BLoC/Cubit conventions, state modeling, presentation side effects, `bloc_presentation`, and `flutter_hooks`
-- [`flutter-cubit-utils`](plugins/flutter-cubit-utils/) - `QueryCubit`, `PaginatedQueryCubit`, `RequestCubit`, and recipes for lists, details, and actions
-- [`flutter-cqrs`](plugins/flutter-cqrs/) - CQRS contracts, repositories, direct `cqrs.run` / `cqrs.get` usage, and CQRS-backed cubits
-- [`flutter-forms`](https://github.com/leancodepl/advanced_forms) - `advanced_forms` form and field controllers, validation (sync, async, cross-field), and submit handling, sourced directly from the package repository's `skills/` — the single source of truth for `advanced_forms` AI support
+| Plugin | Covers |
+| ------ | ------ |
+| [`flutter-bloc`](plugins/flutter-bloc/) | BLoC and Cubit conventions, state modeling, side effects with `bloc_presentation`, `flutter_hooks` |
+| [`flutter-cubit-utils`](plugins/flutter-cubit-utils/) | `QueryCubit`, `PaginatedQueryCubit` and `RequestCubit`, with recipes for lists, details and actions |
+| [`flutter-cqrs`](plugins/flutter-cqrs/) | CQRS contracts, repositories, `cqrs.run` and `cqrs.get`, CQRS-backed cubits |
+| [`flutter-forms`](https://github.com/leancodepl/advanced_forms) | `advanced_forms` controllers, sync, async and cross-field validation, submit handling |
 
 ### UI and verification
 
-- [`flutter-ui`](plugins/flutter-ui/) - design-system-driven UI, loading/error patterns, localized presentation text, and UI implementation checklists
-- [`flutter-patrol`](https://github.com/leancodepl/patrol) - Patrol E2E test skills (write-test workflow, test architecture, key conventions, Patrol MCP), sourced directly from the Patrol repository's `skills/` — the single source of truth for Patrol AI support
-- [`flutter-marionette`](plugins/flutter-marionette/) - runtime interaction with a live debug app through Marionette MCP for exploration, smoke checks, and UI debugging
-- [`flutter-read-logs`](plugins/flutter-read-logs/) - read the running app's latest `flutter run` logs as on-demand context via `/read-logs`
+| Plugin | Covers | Setup |
+| ------ | ------ | ----- |
+| [`flutter-ui`](plugins/flutter-ui/) | Design-system-driven UI, loading and error states, localized text, implementation checklists | None |
+| [`flutter-patrol`](https://github.com/leancodepl/patrol) | Writing Patrol E2E tests, test architecture and key conventions | Patrol CLI and Patrol MCP |
+| [`flutter-marionette`](plugins/flutter-marionette/) | Driving a live debug app through Marionette MCP to explore, smoke-check and debug UI | Marionette MCP and an app-side binding |
+| [`flutter-read-logs`](plugins/flutter-read-logs/) | `/read-logs` gives Claude the logs of your last `flutter run` | One editor setting |
 
-### Every plugin has a `-usage` skill
-
-Once a plugin is installed, it exposes a `/<plugin-name>-usage` skill — for example `/flutter-bloc-usage`, `/flutter-cqrs-usage`, `/flutter-ui-usage`. Run it to see what the plugin covers, its conventions, and example prompts to try next. It's the fastest way to learn a plugin without reading its full `README.md`. If you're not sure where to begin, run `/lean-core-usage` for a tour of the whole marketplace.
-
-## Repo layout
-
-- `plugins/<plugin-name>/` - one self-contained plugin
-- `plugins/<plugin-name>/skills/` - skills the plugin ships
-- `plugins/<plugin-name>/skills/<skill>/references/` - supporting reference material a skill loads on demand
-- `plugins/<plugin-name>/.claude-plugin/` - plugin manifest
-- `.claude-plugin/marketplace.json` - marketplace index
+`flutter-forms` and `flutter-patrol` install straight from the repositories of the packages they cover, so they stay in step with each release. Each plugin's `README.md` covers its setup.
 
 ## Contributing
 
-If you are interested in contributing, please see [`CONTRIBUTING.md`](CONTRIBUTING.md) 
+Fixes and new Flutter plugins are welcome. CI runs every check, so you need nothing installed locally. [`CONTRIBUTING.md`](CONTRIBUTING.md) has the steps, and [`AGENTS.md`](AGENTS.md) has the plugin conventions.
+
+## License
+
+[MIT](LICENSE)

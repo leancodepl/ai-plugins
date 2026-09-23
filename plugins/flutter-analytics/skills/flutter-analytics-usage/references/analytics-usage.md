@@ -2,7 +2,7 @@
 
 ## Pages
 
-Every page must use a page ID from the feature's `<feature_name>_ids.dart` file. Do not inline page-name strings in page widgets.
+Every page must use a page ID from the feature's `<feature_name>_ids.dart` file. Do not inline page-name strings in page widgets. The page ID reaches analytics through the route; see `analytics-wiring.md`.
 
 Single-page feature:
 
@@ -18,7 +18,7 @@ BookingAnalyticsId.detailsPage
 
 ## Clickable Elements
 
-Every button and other clickable element must use an `AnalyticsId` from the feature IDs file.
+Every button and other clickable element must use an `AnalyticsId` from the feature IDs file. The ID is passed to one of the app's tappable widgets, which registers the tap; see `analytics-wiring.md`.
 
 Good:
 

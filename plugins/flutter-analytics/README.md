@@ -8,6 +8,7 @@ Contains the analytics rules and helper skills for feature-level IDs, page IDs, 
 
 - `skills/flutter-analytics-usage/references/analytics.md` - conventions for `*_ids.dart`
 - `skills/flutter-analytics-usage/references/analytics-usage.md` - page and clickable-element usage patterns
+- `skills/flutter-analytics-usage/references/analytics-wiring.md` - the app-level `AnalyticsId` class, tap and page-view tracking through [`leancode_analytics_base`](https://pub.dev/packages/leancode_analytics_base)
 - `skills/flutter-analytics-usage/SKILL.md` - entry point for this plugin
 - `skills/scaffold-analytics-ids/SKILL.md` - create or extend a feature IDs file
 - `skills/review-analytics-coverage/SKILL.md` - audit a feature or page for missing analytics coverage

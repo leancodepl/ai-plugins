@@ -4,14 +4,14 @@ LeanCode Flutter navigation plugin for Claude Code, covering both `auto_route` a
 
 Contains:
 
-- `skills/flutter-navigation-usage/SKILL.md` — entry point for this plugin
-- `skills/flutter-navigation-usage/references/navigation.md` — router selection and shared navigation conventions
-- `skills/flutter-navigation-usage/references/navigation-auto-route.md` — `auto_route` conventions
-- `skills/flutter-navigation-usage/references/navigation-go-router.md` — `go_router` conventions
+- `skills/flutter-navigation-usage/SKILL.md`: entry point for this plugin
+- `skills/flutter-navigation-usage/references/navigation.md`: router selection and shared navigation conventions
+- `skills/flutter-navigation-usage/references/navigation-auto-route.md`: `auto_route` conventions
+- `skills/flutter-navigation-usage/references/navigation-go-router.md`: `go_router` conventions
 
 ## Example usage
 
-- `/flutter-navigation-usage` — get a short explanation of what this plugin does and which asset to use next
+- `/flutter-navigation-usage`: get a short explanation of what this plugin does and which asset to use next
 
 ## What this plugin is NOT about
 

@@ -1,13 +1,13 @@
 # flutter-marionette
 
-LeanCode Flutter plugin for [Marionette MCP](https://github.com/leancodepl/marionette_mcp) — runtime interaction with a live Flutter app via an MCP server, designed for AI-driven exploration, smoke verification, and UI debugging.
+LeanCode Flutter plugin for [Marionette MCP](https://github.com/leancodepl/marionette_mcp): runtime interaction with a live Flutter app via an MCP server, designed for AI-driven exploration, smoke verification, and UI debugging.
 
 ## Included assets
 
-- `skills/flutter-marionette-usage/references/marionette.md` — Marionette vs Patrol, setup, binding, MCP tools, and runtime workflow
-- `skills/flutter-marionette-usage/references/marionette-widget-config.md` — `MarionetteConfiguration`, custom widgets, and screenshot sizing
-- `skills/flutter-marionette-usage/SKILL.md` — explains what this plugin does, when to use it, and which rule or skill to reach for next
-- `.mcp.json` — shipped `marionette` MCP launcher for plugin installs in Claude Code
+- `skills/flutter-marionette-usage/references/marionette.md`: Marionette vs Patrol, setup, binding, MCP tools, and runtime workflow
+- `skills/flutter-marionette-usage/references/marionette-widget-config.md`: `MarionetteConfiguration`, custom widgets, and screenshot sizing
+- `skills/flutter-marionette-usage/SKILL.md`: explains what this plugin does, when to use it, and which rule or skill to reach for next
+- `.mcp.json`: shipped `marionette` MCP launcher for plugin installs in Claude Code
 
 ## Marionette vs Patrol
 
@@ -15,7 +15,7 @@ LeanCode Flutter plugin for [Marionette MCP](https://github.com/leancodepl/mario
 |---|---|---|
 | Purpose | Runtime exploration, smoke verification | Deterministic E2E test suites |
 | Runs against | Live `flutter run` debug session | `patrol develop` / `patrol test` |
-| Test files | None — agent drives the app | Dart test files in `patrol_test/` |
+| Test files | None; the agent drives the app | Dart test files in `patrol_test/` |
 | Best for | Iterating on a feature, smoke after refactor | Regression-proof suites in CI |
 | Build mode | Debug only | Debug + release |
 
@@ -56,7 +56,7 @@ void main() {
 }
 ```
 
-For apps with a custom design system, pass a `MarionetteConfiguration` — see `skills/flutter-marionette-usage/references/marionette-widget-config.md`.
+For apps with a custom design system, pass a `MarionetteConfiguration`. See `skills/flutter-marionette-usage/references/marionette-widget-config.md`.
 
 Important: `MarionetteBinding` must be the only binding initialized in the process. If tests call `main()` in debug mode, avoid initializing Marionette in tests by checking `FLUTTER_TEST` or by using a separate test entrypoint.
 
@@ -120,9 +120,9 @@ Marionette relies on Flutter's VM Service and is intended for a live `flutter ru
 
 ## Example usage
 
-- `/flutter-marionette-usage` — get a short explanation of what this plugin does, how to use it, and example next requests
+- `/flutter-marionette-usage`: get a short explanation of what this plugin does, how to use it, and example next requests
 
 ## Related plugins
 
-- [`flutter-patrol`](https://github.com/leancodepl/patrol) — deterministic E2E testing with Patrol MCP
-- [`flutter-ui`](../flutter-ui/) — design-system guidance (relevant when configuring `isInteractiveWidget` for custom widgets)
+- [`flutter-patrol`](https://github.com/leancodepl/patrol): deterministic E2E testing with Patrol MCP
+- [`flutter-ui`](../flutter-ui/): design-system guidance (relevant when configuring `isInteractiveWidget` for custom widgets)

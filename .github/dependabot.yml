@@ -1,0 +1,12 @@
+version: 2
+updates:
+  # Workflow actions are pinned to full commit SHAs; Dependabot bumps the SHA
+  # and its `# vX.Y.Z` comment together, in one grouped PR.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - "*"

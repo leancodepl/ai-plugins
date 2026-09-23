@@ -26,7 +26,7 @@ func (v *validator) validatePlugin(name string) {
 	if !isFile(filepath.Join(pluginDir, readmeFile)) {
 		v.report.add(where, fmt.Sprintf("missing %s", readmeFile))
 	}
-	v.validateSkills(pluginDir, where)
+	v.validateSkills(pluginDir, where, name)
 }
 
 func (v *validator) loadManifest(path, relPath string) (pluginManifest, bool) {
@@ -94,7 +94,7 @@ func (v *validator) validateManifestFilePointer(pluginDir, where, key, pointer s
 	}
 }
 
-func (v *validator) validateSkills(pluginDir string, where string) {
+func (v *validator) validateSkills(pluginDir, where, pluginName string) {
 	skillsPath := filepath.Join(pluginDir, skillsDir)
 	if !isDir(skillsPath) {
 		v.report.add(where, fmt.Sprintf("missing %s/ directory", skillsDir))
@@ -113,14 +113,50 @@ func (v *validator) validateSkills(pluginDir string, where string) {
 
 	hasUsage := false
 	for _, match := range matches {
-		name := strings.ToLower(filepath.Base(filepath.Dir(match)))
-		if isUsageSkillName(name) {
+		skillName := filepath.Base(filepath.Dir(match))
+		if isUsageSkillName(strings.ToLower(skillName)) {
 			hasUsage = true
-			break
 		}
+		v.validateSkillName(match, skillName, pluginName)
 	}
 	if !hasUsage {
 		v.report.add(where, "a usage skill is required")
+	}
+}
+
+// validateSkillName keeps a skill's invocation name readable. Claude Code exposes
+// a plugin skill as `/<plugin-name>:<skill-name>`, so a skill named after its own
+// plugin stutters back at the user as `/foo:foo`. The frontmatter `name` is what
+// Claude Code actually registers, so it has to agree with the directory —
+// otherwise the directory check alone is bypassable.
+func (v *validator) validateSkillName(skillPath, skillName, pluginName string) {
+	where := relative(v.root, skillPath)
+
+	if strings.EqualFold(skillName, pluginName) {
+		v.report.add(where, fmt.Sprintf(
+			"skill name must differ from the plugin name (%q); it would be invoked as `/%s:%s`. Name the skill after the task it performs (e.g. `read-logs`, `scaffold-feature`)",
+			pluginName, pluginName, skillName,
+		))
+	}
+
+	data, ok := readFile(skillPath, where, v.report)
+	if !ok {
+		return
+	}
+	frontmatter, ok := parseFrontmatter(string(data))
+	if !ok {
+		v.report.add(where, "missing or malformed YAML frontmatter (--- ... ---)")
+		return
+	}
+
+	declared, _ := frontmatter["name"].(string)
+	declared = strings.TrimSpace(declared)
+	if declared == "" {
+		v.report.add(where, "frontmatter must set a non-empty `name`")
+		return
+	}
+	if declared != skillName {
+		v.report.add(where, fmt.Sprintf("frontmatter `name` must match the skill directory (%q), got %q", skillName, declared))
 	}
 }
 

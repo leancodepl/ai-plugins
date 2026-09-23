@@ -126,7 +126,7 @@
     {
       "name": "flutter-marionette",
       "source": "./plugins/flutter-marionette",
-      "description": "LeanCode Marionette MCP setup and usage — runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging.",
+      "description": "LeanCode Marionette MCP setup and usage: runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging.",
       "skills": [
         "./skills/flutter-marionette-usage"
       ]
@@ -134,7 +134,7 @@
     {
       "name": "flutter-read-logs",
       "source": "./plugins/flutter-read-logs",
-      "description": "Read the running Flutter app's latest run logs as on-demand context — inspect what a flutter run already produced (incl. build errors and crashes), no live connection or instrumentation, via /read-logs.",
+      "description": "Read the running Flutter app's latest run logs as on-demand context. Inspect what a flutter run already produced (incl. build errors and crashes), no live connection or instrumentation, via /read-logs.",
       "skills": [
         "./skills/flutter-read-logs-usage",
         "./skills/read-logs"

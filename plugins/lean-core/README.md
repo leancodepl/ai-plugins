@@ -2,8 +2,8 @@
 
 Entry point for the LeanCode AI plugins marketplace. Two manual skills:
 
-- `/lean-core-usage` — explains what the marketplace covers and which plugins are available.
-- `/lean-contribute` — walks a contributor through proposing a change and opening a PR.
+- `/lean-core-usage`: explains what the marketplace covers and which plugins are available.
+- `/lean-contribute`: walks a contributor through proposing a change and opening a PR.
 
 Both skills are manual-only (`disable-model-invocation: true`). They don't auto-fire on inferred intent.
 
