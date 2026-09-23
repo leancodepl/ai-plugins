@@ -50,5 +50,6 @@ class BookingAnalyticsId {
 ## Guardrails
 
 - Keep analytics strings only in the IDs file.
+- If the project has no `AnalyticsId` class yet, set it up first as described in `../flutter-analytics-usage/references/analytics-wiring.md`.
 - Do not duplicate the same action as separate string literals across pages.
 - Prefer stable action names like `ConfirmButton`, `AddButton`, `RetryButton`.

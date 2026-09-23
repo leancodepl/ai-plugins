@@ -3,7 +3,7 @@
   "name": "flutter-analytics",
   "displayName": "Flutter Analytics",
   "description": "LeanCode Flutter analytics guidance for feature-level IDs, page tracking, clickable elements, and analytics review/scaffolding workflows.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "LeanCode"
   },
