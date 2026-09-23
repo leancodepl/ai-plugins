@@ -34,7 +34,7 @@ Currently external: `flutter-patrol` (from [leancodepl/patrol](https://github.co
 
 - Keep plugins self-contained and independently installable.
 - Prefer minimal, documented manifest fields over convenience metadata unless Claude Code clearly requires more.
-- When adding a skill, include the required frontmatter (`name`, `description`) so marketplace parsing keeps working.
+- When adding a skill, include the required frontmatter (`name`, `description`) so marketplace parsing keeps working. The validator requires `name` to match the skill directory and to differ from the plugin name (Claude Code invokes a plugin skill as `/<plugin-name>:<skill-name>`, so `/foo:foo` would stutter).
 - Update the plugin `README.md` when adding a new capability.
 - Avoid coupling shared content to local-only files or directories.
 
@@ -63,7 +63,7 @@ Validate plugin structure locally with Go:
 go run ./cmd/validate-plugins
 ```
 
-CI runs the same structure validation, Go formatting/lint, and the official Claude Code plugin-spec check (`claude plugin validate . --strict`, warnings fail the build) on every PR. After pushing, watch CI with `gh pr checks <pr-number>`.
+CI runs the same structure validation, the validator's tests (`go test ./...`), Go formatting/lint, and the official Claude Code plugin-spec check (`claude plugin validate . --strict`, warnings fail the build) on every PR. After pushing, watch CI with `gh pr checks <pr-number>`.
 
 ## Platform notes
 

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Contribute to LeanCode AI plugins
 
-The canonical contributor reference for `leancodepl/ai-plugins`. The repo's `CONTRIBUTING.md` is a thin pointer at this file. Read top-to-bottom for the full picture, or jump to the relevant path.
+The guided contributor path for `leancodepl/ai-plugins`. The repo's `CONTRIBUTING.md` carries the same steps for contributors working without it. Read top-to-bottom for the full picture, or jump to the relevant path.
 
 ## How to respond
 
@@ -150,7 +150,8 @@ If `gh` is not installed, push the branch and open the PR via the GitHub web UI.
 
 Every PR runs on GitHub Actions:
 
-- **Structure** — manifest fields, marketplace registration, file shape (`go run ./cmd/validate-plugins`).
+- **Structure** — manifest fields, marketplace registration, file shape and skill names (`go run ./cmd/validate-plugins`), plus the validator's own tests (`go test ./...`).
+- **Spec** — the official Claude Code plugin-spec check (`claude plugin validate . --strict`, warnings fail the build).
 - **Lint** — Go formatters/linters for repo tooling.
 
 Contributors do not need to install Go locally — CI runs it. Watch the verdicts with:
