@@ -7,8 +7,8 @@ import (
 	"sort"
 )
 
-// TODO(wiktor.zajac): Consider refactor to only accept one path and delegate
-// report update somewhere else / deduct root path
+// TODO: Consider refactoring to accept a single path and to move the report
+// update elsewhere, deriving the root path instead of taking it separately.
 func readFile(path, relativePath string, report *Report) ([]byte, bool) {
 	data, err := os.ReadFile(path)
 	if err != nil {
