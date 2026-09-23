@@ -40,7 +40,17 @@ jobs:
           node-version: 22
 
       - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.173
+        run: npm install -g @anthropic-ai/claude-code@2.1.280
 
       - name: Validate against the Claude Code plugin schema
         run: claude plugin validate . --strict
+
+      # The marketplace-level run does not open SKILL.md files, so a skill with
+      # broken frontmatter passes it. Validate each local plugin as well.
+      - name: Validate each local plugin
+        run: |
+          for dir in plugins/*/; do
+            echo "::group::$dir"
+            claude plugin validate "$dir" --strict
+            echo "::endgroup::"
+          done
