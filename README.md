@@ -1,6 +1,6 @@
 # LeanCode AI Plugins
 
-Claude Code plugins for Flutter: the conventions we use in production, and tools that let Claude see your running app. From the team behind [Patrol](https://github.com/leancodepl/patrol), [Marionette MCP](https://github.com/leancodepl/marionette_mcp) and [advanced_forms](https://github.com/leancodepl/advanced_forms).
+Claude Code plugins for Flutter: the conventions we use in production, and tools that read your app's logs and drive it live. From the team behind [Patrol](https://github.com/leancodepl/patrol), [Marionette MCP](https://github.com/leancodepl/marionette_mcp) and [advanced_forms](https://github.com/leancodepl/advanced_forms).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Works with Claude Code](https://img.shields.io/badge/works%20with-Claude%20Code-d97757.svg)](https://code.claude.com/docs/en/overview)
