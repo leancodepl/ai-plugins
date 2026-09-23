@@ -26,7 +26,7 @@ Install [`flutter-read-logs`](plugins/flutter-read-logs/), run your app from you
 
 The skill resolves this project's log file (`/tmp/flutter-<repo>.log`, derived from the shared `.git` so every worktree maps to one file), tells you the exact path it is about to read, and checks how fresh the run is — if Dart files under `lib/` changed after the run was captured, it says so before drawing conclusions. It then normalizes the capture (a raw terminal transcript, or the JSON-framed Debug Adapter log VS Code and Cursor write) and reads it *with your question as the lens*: for an ordering question like this one it traces the relevant cubits and events in sequence rather than hunting for errors.
 
-What comes back is an answer to your question, backed by lines from that run — not a summary of the log and not a list of every error in it. If no log exists yet, it walks you through the one-time editor setup instead of just reporting a missing file. Nothing is committed; the skill only reads.
+What comes back is an answer to your question, backed by lines from that run — not a summary of the log and not a list of every error in it. If no log exists yet, it walks you through the one-time editor setup instead of just reporting a missing file — with your go-ahead it writes your editor's local run/debug settings, and it never commits anything. Reading a run does send that run's contents to the model, which is why the skill names the file before it reads it; the plugin's `README.md` carries the full data-handling note.
 
 ## Install
 
@@ -35,6 +35,8 @@ These plugins are distributed as a Claude Code **plugin marketplace**. Add the m
 ```
 /plugin marketplace add leancodepl/ai-plugins
 ```
+
+Then install any plugin from the list below by name, suffixed with this marketplace's name, `leancode-ai-plugins`:
 
 ```
 /plugin install flutter-bloc@leancode-ai-plugins
@@ -104,14 +106,14 @@ For the full reference, see Claude Code's [Discover and install plugins](https:/
 
 ## Per-plugin setup
 
-Most plugins are pure rules and skills with no setup. A few need one-time tooling or MCP setup — finish it from the plugin's `README.md`:
+Most plugins are pure skills and reference material with no setup. A few need one-time tooling or MCP setup — finish it from the plugin's `README.md`:
 
 - [`flutter-patrol`](https://github.com/leancodepl/patrol) - Patrol CLI and Patrol MCP
 - [`flutter-marionette`](plugins/flutter-marionette/) - Marionette MCP and app-side binding
 
-## Every plugin has a `-usage` skill
+## Most plugins have a `-usage` skill
 
-Once a plugin is installed, it exposes a `/<plugin-name>-usage` skill — for example `/flutter-bloc-usage`, `/flutter-cqrs-usage`, `/flutter-ui-usage`. Run it to see what the plugin covers, its conventions, and example prompts to try next. It's the fastest way to learn a plugin without reading its full `README.md`. If you're not sure where to begin, run `/lean-core-usage` for a tour of the whole marketplace.
+Every plugin sourced from this repository exposes a `/<plugin-name>-usage` skill once installed — for example `/flutter-bloc-usage`, `/flutter-cqrs-usage`, `/flutter-ui-usage`. Run it to see what the plugin covers, its conventions, and example prompts to try next. It's the fastest way to learn a plugin without reading its full `README.md`. The externally sourced `flutter-forms` and `flutter-patrol` entries ship their own skills instead, named by their home repositories. If you're not sure where to begin, run `/lean-core-usage` for a tour of the whole marketplace.
 
 > **Tip:** Install [`lean-core`](plugins/lean-core/) first and run `/lean-core-usage` for a guided tour of the whole marketplace.
 
@@ -124,7 +126,7 @@ Outside contributions are welcome — new skills, fixes and sharper wording in e
 3. Run `go run ./cmd/validate-plugins` to check the structure locally.
 4. Open a PR. CI re-runs that structure validation, Go formatting and lint, and the official Claude Code plugin-spec check (`claude plugin validate . --strict`, where warnings fail the build).
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) is the longer version, and [`AGENTS.md`](AGENTS.md) holds the conventions.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) has the same steps plus the guided path, and [`AGENTS.md`](AGENTS.md) holds the conventions.
 
 ## Repo layout
 
