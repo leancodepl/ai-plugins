@@ -4,15 +4,15 @@ LeanCode Flutter plugin for `leancode_cubit_utils` and `leancode_cubit_utils_cqr
 
 Contains the cubit-utils rules and examples:
 
-- `skills/flutter-cubit-utils-usage/references/cubit-utils.md` — base classes and when to use them
-- `skills/flutter-cubit-utils-usage/references/cubit-list.md` — paginated list cubit example
-- `skills/flutter-cubit-utils-usage/references/cubit-details.md` — single-object/details cubit example
-- `skills/flutter-cubit-utils-usage/references/cubit-action.md` — action/command cubit examples
-- `skills/flutter-cubit-utils-usage/SKILL.md` — entry point for this plugin
+- `skills/flutter-cubit-utils-usage/references/cubit-utils.md`: base classes and when to use them
+- `skills/flutter-cubit-utils-usage/references/cubit-list.md`: paginated list cubit example
+- `skills/flutter-cubit-utils-usage/references/cubit-details.md`: single-object/details cubit example
+- `skills/flutter-cubit-utils-usage/references/cubit-action.md`: action/command cubit examples
+- `skills/flutter-cubit-utils-usage/SKILL.md`: entry point for this plugin
 
 ## Example usage
 
-- `/flutter-cubit-utils-usage` — get a short explanation of what this plugin does and which asset to use next
+- `/flutter-cubit-utils-usage`: get a short explanation of what this plugin does and which asset to use next
 
 ## What this plugin is NOT about
 
@@ -20,5 +20,5 @@ General BLoC/Cubit fundamentals and widget-side presentation patterns live in [`
 
 ## Related plugins
 
-- [`flutter-bloc`](../flutter-bloc/) — general BLoC/Cubit fundamentals
-- [`flutter-cqrs`](../flutter-cqrs/) — CQRS contracts and data-access guidance
+- [`flutter-bloc`](../flutter-bloc/): general BLoC/Cubit fundamentals
+- [`flutter-cqrs`](../flutter-cqrs/): CQRS contracts and data-access guidance
