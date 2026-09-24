@@ -142,6 +142,30 @@ class BuildStateTest(unittest.TestCase):
         with self.assertRaises(jev.JevError):
             jev.build_state(None, None, "auto")
 
+    def test_a_long_unnamed_blob_is_refused(self):
+        blob = " ".join(f"L{n}. a lesson worth recording." for n in range(60))
+        self.assertGreater(len(blob), jev.MAX_UNSTRUCTURED_STATE)
+        with self.assertRaises(jev.JevError) as caught:
+            jev.build_state(blob, None, "auto")
+        self.assertIn("concepts/state.md", str(caught.exception))
+
+    def test_a_long_blob_is_allowed_when_declared_text(self):
+        blob = "x" * (jev.MAX_UNSTRUCTURED_STATE + 1)
+        self.assertEqual(jev.build_state(blob, None, "text"), blob)
+
+    def test_a_long_object_is_untouched(self):
+        state = {f"lesson_{n}": "a lesson worth recording." for n in range(60)}
+        raw = json.dumps(state)
+        self.assertGreater(len(raw), jev.MAX_UNSTRUCTURED_STATE)
+        self.assertEqual(jev.build_state(raw, None, "auto"), state)
+
+    def test_a_long_blob_from_a_file_is_refused_too(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state_file = Path(tmp) / "state.txt"
+            state_file.write_text("x" * (jev.MAX_UNSTRUCTURED_STATE + 1))
+            with self.assertRaises(jev.JevError):
+                jev.build_state(None, state_file, "auto")
+
 
 class RedactTest(unittest.TestCase):
     def test_key_is_removed_from_text(self):
