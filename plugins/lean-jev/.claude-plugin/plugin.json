@@ -3,7 +3,7 @@
   "name": "lean-jev",
   "displayName": "Lean Jev",
   "description": "Ask Jev, TypeSafe's System One model, for calibrated typed judgments: yes/no probabilities, rubric scores, picks from a fixed set. Ships a stdlib-only Python client; an API key is the only prerequisite.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "LeanCode"
   },

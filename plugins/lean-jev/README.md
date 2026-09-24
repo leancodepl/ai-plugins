@@ -91,18 +91,24 @@ To skip the approval prompt on every call, allow the script in your Claude Code 
 ```bash
 python3 <plugin-root>/scripts/jev.py key-status
 python3 <plugin-root>/scripts/jev.py ask \
-  --state 'The export button crashes the settings page in Safari.' \
-  --questions '{"is_bug": {"type": "noul", "instructions": "Does this report a software defect?"}}'
+  --state '{"ticket": "The export button crashes the settings page in Safari.", "reported_by": "support"}' \
+  --questions '{"is_bug": {"type": "noul", "instructions": "Does `ticket` report a software defect?"}}'
 ```
 
 `key-status` reports whether a key was found and from where, never the key. A `noul` near 1 from the
 second command means the whole path works.
+
+State goes in a JSON object whenever it has more than one part, so every part carries a name a
+question can point at with a backticked path. A bare string is for a single indivisible blob such
+as a diff or a log, and the client asks you to declare that with `--state-format text` once such a
+string runs long.
 
 ## Troubleshooting
 
 | Symptom | Cause | Fix |
 | ------- | ----- | --- |
 | `python3: can't open file .../scripts/jev.py` | Wrong path, not a broken setup | The script sits at `<plugin-root>/scripts/jev.py`, what `${CLAUDE_PLUGIN_ROOT}` expands to. `ls` the directory |
+| `State is N characters of unnamed text` | Several items were flattened into one string | Put each part in a JSON object under its own key and point questions at them with backticked paths, per [`concepts/state.md`](https://docs.typesafe.ai/concepts/state.md). For a genuine single blob, pass `--state-format text` |
 | `{"key": "missing"}` from `key-status` | No key file | Write `~/.config/typesafe/env` as above; `ls -l` should show `-rw-------` |
 | 401 from TypeSafe | A key was found and rejected | Check it is current at console.typesafe.ai, or a stale `TYPESAFE_API_KEY` in the environment is shadowing the file. `key-status` names the source |
 | 422 from TypeSafe | Malformed request, and the API says how | Usually criteria shapes: `score` takes an ordered array, `choice` takes a map, and a `noul`'s optional criteria are a map too. The script checks those locally |
