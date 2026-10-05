@@ -37,6 +37,8 @@ MAX_ATTEMPTS = 4
 QUESTION_TYPES = {"noul", "score", "choice"}
 MAX_CHOICE_OPTIONS = 255
 MAX_SCORE_LEVELS = 10
+# Past this many characters, an unnamed blob of text is almost never one thing.
+MAX_UNSTRUCTURED_STATE = 400
 
 
 class JevError(RuntimeError):
@@ -104,10 +106,30 @@ def build_state(inline: str | None, path: Path | None, fmt: str) -> Any:
             raise JevError(
                 "State is not valid JSON, and --state-format json was requested"
             ) from None
+        reject_unnamed_blob(raw)
         return raw
     if fmt == "json" or isinstance(parsed, (dict, list)):
         return parsed
+    reject_unnamed_blob(raw)
     return raw
+
+
+def reject_unnamed_blob(raw: str) -> None:
+    """Refuse a long stretch of text that was never given named parts.
+
+    Several items flattened into one string is the framing mistake that costs
+    the most: the questions end up referring to them in prose, the answers
+    degrade, and nothing in the response says why. Passing --state-format text
+    makes the single-blob case a deliberate answer rather than a default.
+    """
+    if len(raw) <= MAX_UNSTRUCTURED_STATE:
+        return
+    raise JevError(
+        f"State is {len(raw)} characters of unnamed text. A state with more than one part "
+        "belongs in a JSON object, so each part has a name a question can point at with a "
+        "backticked path — see https://docs.typesafe.ai/concepts/state.md. If this really "
+        "is one indivisible blob, such as a diff or a log, pass --state-format text."
+    )
 
 
 def validate_questions(questions: Any) -> None:

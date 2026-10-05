@@ -18,8 +18,36 @@ a list rather than a sample.
 This skill is how you hand a judgment over without mangling it. Jev reads a question
 literally, answers each one in isolation, and explains nothing, so the framing carries the whole
 weight: one factor per question, the right type for the job, state cut to what the question needs.
-What follows is the general discipline, which is enough for a one-off question. A question that
-keeps coming back earns a **recipe** — a written decomposition, kept in `references/`.
+What follows is the general discipline. A question that keeps coming back earns a **recipe** —
+a written decomposition, kept in `references/`.
+
+## Before the first call
+
+Read these first, in this session, before sending anything:
+
+- [`concepts/state.md`](https://docs.typesafe.ai/concepts/state.md) — every time.
+- The page for each question type you are about to use.
+
+| What you need | Page |
+| --- | --- |
+| Yes/no — probability that a condition holds | [`primitives/noul.md`](https://docs.typesafe.ai/primitives/noul.md) |
+| Position on ordered levels you describe | [`primitives/score.md`](https://docs.typesafe.ai/primitives/score.md) |
+| One of a fixed set, with the distribution | [`primitives/choice.md`](https://docs.typesafe.ai/primitives/choice.md) |
+| Reading confidence and picking thresholds | [`confidence.md`](https://docs.typesafe.ai/confidence.md) |
+| Fields, limits, and error codes | [`api.md`](https://docs.typesafe.ai/api.md) |
+| Combining several scored dimensions | [`patterns/composite-scoring.md`](https://docs.typesafe.ai/patterns/composite-scoring.md) |
+
+Start from the [index](https://docs.typesafe.ai/llms.txt) for anything not listed. Every page
+serves Markdown by appending `.md` to its path; fetch that form, which returns the page itself
+rather than a summary of it, and resolve relative links against `https://docs.typesafe.ai`.
+
+**The request contract below is not a substitute for these pages.** It says what the API accepts.
+The pages say what the numbers mean and how to frame a question so the number is worth having. A
+request that satisfies the contract and ignores the pages comes back as a confident number about
+the wrong thing, and nothing in the response marks it.
+
+**If a page will not load, stop and tell the user.** Being unable to read the docs is a reason to
+raise the problem, not a reason to call Jev anyway.
 
 ## Calling it
 
@@ -28,9 +56,14 @@ keeps coming back earns a **recipe** — a written decomposition, kept in `refer
 
 ```bash
 python3 <plugin-root>/scripts/jev.py ask \
-  --state 'The export button crashes the settings page in Safari.' \
-  --questions '{"is_bug": {"type": "noul", "instructions": "Does this report a software defect?"}}'
+  --state '{"ticket": "The export button crashes the settings page in Safari.", "reported_by": "support"}' \
+  --questions '{"is_bug": {"type": "noul", "instructions": "Does `ticket` report a software defect?"}}'
 ```
+
+State is a JSON object whenever it has more than one part, so each part carries a name a question
+can point at with a backticked path. A bare string is for a single indivisible blob — a diff, a
+log, one document — and `jev.py` makes you say so with `--state-format text` once such a string
+runs long, because several items flattened into one blob is the mistake that costs the most.
 
 It reads the API key from `~/.config/typesafe/env` on its own, retries 429s and 529s, and prints
 the API's JSON. `--state-file <path>` sends a file instead — reach for it whenever the state is a
@@ -52,30 +85,6 @@ The request contract, which the script checks before spending a call:
 - Limits: ~64k tokens per request, ~32k for the state plus the longest single question. Text only.
 
 When a call errors, `references/setup.md` covers the failures by symptom.
-
-## Read the page for the type you pick
-
-TypeSafe's documentation is the source of truth for what each type means and how to write its
-criteria. This skill owns the decision to ask and the discipline around reporting; the docs own
-the semantics, and they stay current as the model does. A page is one fetch — cheap enough to
-read before writing criteria, and worth it, because a misread number fails silently.
-
-Start from the [index](https://docs.typesafe.ai/llms.txt). Every page serves Markdown by
-appending `.md` to its path; fetch that form, which returns the page itself rather than a
-summary of it, and resolve relative links against `https://docs.typesafe.ai`.
-
-| What you need | Page |
-| --- | --- |
-| Yes/no — probability that a condition holds | [`primitives/noul.md`](https://docs.typesafe.ai/primitives/noul.md) |
-| Position on ordered levels you describe | [`primitives/score.md`](https://docs.typesafe.ai/primitives/score.md) |
-| One of a fixed set, with the distribution | [`primitives/choice.md`](https://docs.typesafe.ai/primitives/choice.md) |
-| What belongs in state, and how to shape it | [`concepts/state.md`](https://docs.typesafe.ai/concepts/state.md) |
-| Reading confidence and picking thresholds | [`confidence.md`](https://docs.typesafe.ai/confidence.md) |
-| Fields, limits, and error codes | [`api.md`](https://docs.typesafe.ai/api.md) |
-| Combining several scored dimensions | [`patterns/composite-scoring.md`](https://docs.typesafe.ai/patterns/composite-scoring.md) |
-
-When the fetch fails — offline, sandboxed, or blocked — the contract above is enough to make a
-well-formed call. Say in your report that you wrote the criteria without the page.
 
 ## Why ask Jev instead of just answering
 
@@ -113,9 +122,8 @@ are three Jev questions, and the judgment you build on top of them is yours — 
 1. **Name the decision.** What will you do differently depending on the answer? If nothing,
    do not ask.
 2. **Decompose it** into atomic questions and pick a type for each: `noul` for a yes/no
-   probability, `score` for a position on ordered levels, `choice` for one of a fixed set. Read
-   that type's page — the number means something different in each, and the three are not
-   interchangeable.
+   probability, `score` for a position on ordered levels, `choice` for one of a fixed set. The
+   number means something different in each, and the three are not interchangeable.
 3. **Build the state.** Only what the questions need. Accuracy falls as irrelevant material
    grows, and the state is capped around 32k tokens. Filter first.
 4. **One `jev.py ask` call** carrying every question, including speculative ones you may not end
