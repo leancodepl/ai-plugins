@@ -3,7 +3,7 @@
   "name": "lean-attention",
   "displayName": "Lean Attention",
   "description": "Desktop notification and a spoken line whenever your agent waits for you: a permission prompt, a question, or an idle session. The script is agent-agnostic. Linux and macOS.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "LeanCode"
   },

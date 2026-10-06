@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- `LEAN_ATTENTION_ESCALATE_COMMAND`: your own command, run when nobody reacts within `LEAN_ATTENTION_ESCALATE_AFTER` seconds (default 120, `0` runs it right away). Gets the title and message as `$1` and `$2`.
+- `hooks/hooks.json`: `UserPromptSubmit`, `PostToolUse`, `Stop` and `SessionEnd` hooks cancel a pending escalation through `notify.sh --cancel`.
+- No new built-in channels; README shows a KDE Connect phone ping as an example.
+
 ## 0.1.0
 
 - Initial `lean-attention` plugin.
