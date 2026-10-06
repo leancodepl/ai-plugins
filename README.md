@@ -107,6 +107,12 @@ See [Discover and install plugins](https://code.claude.com/docs/en/discover-plug
 | ------ | ------ | ----- |
 | [`lean-jev`](plugins/lean-jev/) | Hands a judgment call to Jev, TypeSafe's System One model, and frames it the way Jev needs it framed: typed questions, numbers instead of prose, cheap enough to judge every item in a list | A TypeSafe API key |
 
+### Workflow
+
+| Plugin | Covers | Setup |
+| ------ | ------ | ----- |
+| [`lean-attention`](plugins/lean-attention/) | A desktop notification and a spoken line whenever your agent waits for you, so a permission prompt in a background terminal doesn't sit unnoticed | None on macOS; `libnotify-bin` and `speech-dispatcher` on Linux |
+
 ## Contributing
 
 Fixes and new Flutter plugins are welcome. CI runs every check, so you need nothing installed locally. [`CONTRIBUTING.md`](CONTRIBUTING.md) has the steps, and [`AGENTS.md`](AGENTS.md) has the plugin conventions.

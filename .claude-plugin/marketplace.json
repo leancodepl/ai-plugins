@@ -148,6 +148,14 @@
         "./skills/lean-jev-usage",
         "./skills/ask-jev"
       ]
+    },
+    {
+      "name": "lean-attention",
+      "source": "./plugins/lean-attention",
+      "description": "Desktop notification and a spoken line whenever your agent waits for you: a permission prompt, a question, or an idle session. The script is agent-agnostic. Linux and macOS.",
+      "skills": [
+        "./skills/lean-attention-usage"
+      ]
     }
   ]
 }

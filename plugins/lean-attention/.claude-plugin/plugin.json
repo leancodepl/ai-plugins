@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "lean-attention",
+  "displayName": "Lean Attention",
+  "description": "Desktop notification and a spoken line whenever your agent waits for you: a permission prompt, a question, or an idle session. The script is agent-agnostic. Linux and macOS.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "notifications",
+    "hooks",
+    "attention",
+    "voice"
+  ],
+  "skills": "./skills/"
+}
