@@ -148,6 +148,15 @@
         "./skills/lean-jev-usage",
         "./skills/ask-jev"
       ]
+    },
+    {
+      "name": "lean-flitz",
+      "source": "./plugins/lean-flitz",
+      "description": "Publish a Flitz bundle of the current Flutter project with `flitz publish` and get back the install link. Works in Claude Tag, where the Agent Proxy injects the organization API key, and locally with `flitz login`.",
+      "skills": [
+        "./skills/lean-flitz-usage",
+        "./skills/publish-flitz-bundle"
+      ]
     }
   ]
 }
