@@ -101,6 +101,12 @@ See [Discover and install plugins](https://code.claude.com/docs/en/discover-plug
 
 `flutter-forms` and `flutter-patrol` install straight from the repositories of the packages they cover, so they stay in step with each release. Each plugin's `README.md` covers its setup.
 
+### Design
+
+| Plugin | Covers |
+| ------ | ------ |
+| [`design`](plugins/design/) | `/design:deslopify` gives art direction against the generic AI look for landing pages, UI mockups, Figma frames and marketing copy |
+
 ### Judgment and review
 
 | Plugin | Covers | Setup |

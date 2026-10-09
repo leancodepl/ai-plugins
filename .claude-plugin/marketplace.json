@@ -148,6 +148,15 @@
         "./skills/lean-jev-usage",
         "./skills/ask-jev"
       ]
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "Art direction against the generic AI look for landing pages, UI mockups, Figma frames and marketing copy.",
+      "skills": [
+        "./skills/design-usage",
+        "./skills/deslopify"
+      ]
     }
   ]
 }

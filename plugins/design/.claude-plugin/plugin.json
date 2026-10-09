@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "design",
+  "displayName": "Design",
+  "description": "Art direction against the generic AI look for landing pages, UI mockups, Figma frames and marketing copy.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "design",
+    "ui",
+    "figma",
+    "copywriting",
+    "landing-page"
+  ],
+  "skills": "./skills/"
+}
