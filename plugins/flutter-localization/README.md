@@ -8,7 +8,7 @@ Contains the localization rule and workflow:
 
 - `skills/flutter-localization-usage/references/localization.md`: localization conventions
 - `skills/flutter-localization-usage/SKILL.md`: entry point for this plugin
-- `skills/poe2arb-workflow/SKILL.md`: workflow for ARB updates, `flutter gen-l10n`, and `poe2arb seed`
+- `skills/poe2arb-workflow/SKILL.md`: workflow for ARB updates, `flutter gen-l10n`, and syncing with POEditor via `poe2arb poe` and `poe2arb upload`
 
 ## Example usage
 

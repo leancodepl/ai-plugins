@@ -16,7 +16,7 @@ description: Explain what the `flutter-localization` plugin does and how to use 
 ## What this plugin does
 
 - Covers ARB-based translation conventions for LeanCode Flutter projects.
-- Explains `l10n(context)` usage in widgets and the POEditor plus `poe2arb` sync flow.
+- Explains `l10n(context)` usage in widgets and the POEditor plus `poe2arb` sync flow (`poe2arb poe` to pull, `poe2arb upload` to push).
 - Keeps localization boundaries aligned with LeanCode rules.
 
 ## How to use it
@@ -31,6 +31,7 @@ description: Explain what the `flutter-localization` plugin does and how to use 
 - "Add translations for the new booking status labels."
 - "Review this app's localization usage and `l10n(context)` usage."
 - "Walk me through the `poe2arb` sync flow."
+- "Push my ARB changes to POEditor with `poe2arb upload`."
 
 ## Reach for these assets
 
