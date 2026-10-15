@@ -3,7 +3,7 @@
   "name": "flutter-localization",
   "displayName": "Flutter Localization",
   "description": "LeanCode Flutter localization guidance for ARB, POEditor, and l10n(context) workflows.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "LeanCode"
   },
