@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "lean-flitz",
+  "displayName": "Lean Flitz",
+  "description": "Publish a Flitz bundle of the current Flutter project with `flitz publish` and get back the install link. Works in Claude Tag, where the Agent Proxy injects the organization API key, and locally with `flitz login`.",
+  "version": "0.1.0",
+  "author": {
+    "name": "LeanCode"
+  },
+  "homepage": "https://github.com/leancodepl/ai-plugins",
+  "repository": "https://github.com/leancodepl/ai-plugins",
+  "keywords": [
+    "flitz",
+    "flutter",
+    "preview",
+    "bundle",
+    "claude-tag"
+  ],
+  "skills": "./skills/"
+}
