@@ -89,7 +89,7 @@
       "strict": false,
       "description": "Flutter forms skills built on advanced_forms (form and field controllers, validation modes, and submit/server-error handling), sourced directly from the package repository.",
       "skills": [
-        "./skills/advanced_forms-build-forms"
+        "./skills/advanced-forms-build-forms"
       ]
     },
     {
