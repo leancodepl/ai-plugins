@@ -126,9 +126,24 @@
     {
       "name": "flutter-marionette",
       "source": "./plugins/flutter-marionette",
-      "description": "LeanCode Marionette MCP setup and usage: runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging.",
+      "description": "LeanCode Marionette MCP setup and usage: runtime interaction with a live Flutter debug app for AI-driven exploration, smoke verification, and UI debugging, and turning a verified run into Patrol tests. Installs flutter-marionette-skills with it.",
       "skills": [
         "./skills/flutter-marionette-usage"
+      ]
+    },
+    {
+      "name": "flutter-marionette-skills",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/leancodepl/marionette_mcp.git",
+        "path": "packages/marionette_flutter"
+      },
+      "strict": false,
+      "description": "Marionette's Agent Skills (set up an app, drive it and write the report, turn a verified run into Patrol tests), sourced directly from the marionette_flutter package. flutter-marionette installs it.",
+      "skills": [
+        "./skills/marionette-flutter-setup",
+        "./skills/marionette-flutter-drive-app",
+        "./skills/marionette-flutter-to-patrol"
       ]
     },
     {

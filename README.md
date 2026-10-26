@@ -96,11 +96,11 @@ See [Discover and install plugins](https://code.claude.com/docs/en/discover-plug
 | ------ | ------ | ----- |
 | [`flutter-ui`](plugins/flutter-ui/) | Design-system-driven UI, loading and error states, localized text, implementation checklists | None |
 | [`flutter-patrol`](https://github.com/leancodepl/patrol) | Writing Patrol E2E tests, test architecture and key conventions | Patrol CLI and Patrol MCP |
-| [`flutter-marionette`](plugins/flutter-marionette/) | Driving a live debug app through Marionette MCP to explore, smoke-check and debug UI | Marionette MCP and an app-side binding |
+| [`flutter-marionette`](plugins/flutter-marionette/) | Driving a live debug app through Marionette MCP to explore, smoke-check and debug UI; turning a verified run into Patrol tests | Marionette MCP and an app-side binding |
 | [`flutter-read-logs`](plugins/flutter-read-logs/) | `/read-logs` gives Claude the logs of your last `flutter run` | One editor setting |
 | [`lean-flitz`](plugins/lean-flitz/) | `/publish-flitz-bundle` publishes a [Flitz](https://docs.flitz.dev) bundle of the project and returns the install link, from Claude Code or Claude Tag | A Flitz organization and a project set up for Flitz |
 
-`flutter-forms` and `flutter-patrol` install straight from the repositories of the packages they cover, so they stay in step with each release. Each plugin's `README.md` covers its setup.
+`flutter-forms` and `flutter-patrol` install straight from the repositories of the packages they cover, so they stay in step with each release. `flutter-marionette` does the same for its skills: it installs `flutter-marionette-skills` from the Marionette repository. Each plugin's `README.md` covers its setup.
 
 ### Judgment and review
 
