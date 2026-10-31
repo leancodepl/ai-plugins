@@ -1,40 +1,42 @@
 ---
 name: flutter-marionette-usage
-description: Explain what the `flutter-marionette` plugin does and how to drive a running Flutter app through Marionette MCP. Use when the user invokes `/flutter-marionette-usage`, asks what this plugin covers, wants Claude to tap, type, scroll, take screenshots or smoke-test a running Flutter app, or needs help with Marionette MCP setup, `get_logs`, or custom widget configuration.
+description: Explain what the `flutter-marionette` plugin does and route to its Marionette skills. Use when the user invokes `/flutter-marionette-usage`, asks what this plugin covers, asks how Marionette compares with Patrol, or is unsure which Marionette skill fits a task.
 ---
 
 # Marionette Usage
 
 ## How to respond
 
-- If the user invoked this skill without a concrete task, start by explaining what Marionette is for and when it is better than writing tests.
-- Show how to use it with concrete runtime-exploration tasks this plugin can handle.
-- Point to the relevant rule or README section for setup, widget configuration, or tool boundaries.
-- If the user already gave a concrete Marionette task, briefly explain why this plugin fits and then do the work.
+- If the user invoked this skill without a concrete task, explain what Marionette is for and when it is better than writing tests, then show the example requests below.
+- If the user gave a concrete task, load the skill that fits it (table below) and do the work.
 - Do not reply with filler like "skill loaded", "ready for the task", or "what would you like to do?" before explaining the plugin.
 
 ## What this plugin does
 
-- Helps an AI agent interact with a live Flutter debug app through Marionette MCP.
-- Covers setup, runtime connection, log collection, and custom widget configuration.
-- Clarifies when Marionette is the right tool for smoke verification or debugging, and when Patrol is a better fit for deterministic E2E tests.
+- Ships the `marionette` MCP server entry, which runs `marionette_mcp`, so the agent can tap, type, scroll, take screenshots and read logs in a running debug or profile app.
+- Installs `flutter-marionette-skills`: the Agent Skills that ship in the `marionette_flutter` package, read from Marionette's `main` branch.
 
-## How to use it
+| Task | Skill |
+| --- | --- |
+| Add Marionette to an app; configure a custom design system, logs or device config; fix a binding or version error | `marionette-flutter-setup` |
+| Drive a running app: smoke-test a flow, reproduce or verify a bug, sweep text scale, write the session report | `marionette-flutter-drive-app` |
+| Turn a verified session (`steps.md`, `report.md`, screenshots) into Patrol tests | `marionette-flutter-to-patrol` |
 
-- Ask how to connect Marionette to a running `flutter run` session.
-- Ask to verify or debug an interactive flow without creating test files.
-- Ask how to configure Marionette for a custom design-system widget.
-- Ask to troubleshoot setup issues around bindings, VM service connection, or log collection.
+If those skills are missing, the dependency did not install. Tell the user to run `/plugin install flutter-marionette-skills@leancode-ai-plugins`.
+
+## Marionette or Patrol
+
+- Marionette: an agent drives a live app, with no test files. Gestures are best effort. Use it to explore, smoke-check and debug.
+- Patrol (the `flutter-patrol` plugin): deterministic E2E tests in `patrol_test/`, in debug and release builds, for CI. `marionette-flutter-to-patrol` turns a Marionette run into such tests and builds on Patrol's skills.
 
 ## Example requests
 
-- "Help me connect Marionette to my running Flutter app."
+- "Add Marionette to this app."
 - "Use Marionette to smoke-test the onboarding flow."
-- "How should I configure Marionette for this custom button component?"
+- "Write Patrol tests from .marionette/sessions/checkout-20260922T1801."
 
 ## Reach for these assets
 
-- `references/marionette.md` - Marionette workflow, setup, and tool boundaries.
-- `references/marionette-widget-config.md` - interactive-widget and text-extraction configuration.
-- `README.md` - complete setup sequence and VM service connection details.
-- Related plugin: `flutter-patrol` - deterministic E2E testing with Patrol.
+- `README.md`: install, the bundled MCP launcher, and the manual config for other MCP clients.
+- https://marionette.leancode.co/docs/: the full Marionette documentation.
+- Related plugin: `flutter-patrol`, deterministic E2E testing with Patrol.
