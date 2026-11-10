@@ -60,8 +60,8 @@ stake is also cheaper to just answer.
 
 ## Requirements
 
-The `evaluate` binary installed and a `TYPESAFE_API_KEY` exported; the plugin
-ships the launcher only. Whatever goes in `state` leaves the machine. Both are
-covered in the plugin `README.md`, and in `skills/ask-jev/references/setup.md`
-for when the tool turns out to be missing mid-session.
+Python 3 and a key in `~/.config/typesafe/env`: a TypeSafe key, or a LiteLLM
+proxy key with `JEV_BASE_URL` and `JEV_MODEL` set beside it. Whatever goes in
+`state` leaves the machine. Both are covered in the plugin `README.md`, and in
+`skills/ask-jev/references/setup.md` for when a call fails mid-session.
 

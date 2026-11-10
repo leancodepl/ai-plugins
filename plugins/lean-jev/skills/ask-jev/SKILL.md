@@ -65,11 +65,12 @@ can point at with a backticked path. A bare string is for a single indivisible b
 log, one document — and `jev.py` makes you say so with `--state-format text` once such a string
 runs long, because several items flattened into one blob is the mistake that costs the most.
 
-It reads the API key from `~/.config/typesafe/env` on its own, retries 429s and 529s, and prints
+It reads the API key, and optionally a proxy endpoint and default model, from
+`~/.config/typesafe/env` on its own, retries 429s and 529s, and prints
 the API's JSON. `--state-file <path>` sends a file instead — reach for it whenever the state is a
 diff, a log, or anything else large, because a file passed by path never enters this transcript.
 `--questions-file` does the same for the questions. `key-status` answers whether a key was found
-and from where.
+and from where, and which endpoint and default model are in use.
 
 The request contract, which the script checks before spending a call:
 
@@ -81,7 +82,8 @@ The request contract, which the script checks before spending a call:
   answer is 0-indexed and can land between levels. The `legend` in the response comes back keyed
   by index; the request never takes that shape.
 - **`choice`** takes `criteria` as a **map** of option id to description, at most 255.
-- `--model` defaults to `jev-latest`.
+- `--model` defaults to `JEV_MODEL` from the env file, else `jev-latest`. Behind a proxy, model
+  names are the proxy's aliases; leave `--model` off unless you mean a different model.
 - Limits: ~64k tokens per request, ~32k for the state plus the longest single question. Text only.
 
 When a call errors, `references/setup.md` covers the failures by symptom.

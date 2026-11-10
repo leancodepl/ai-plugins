@@ -5,9 +5,11 @@
 
 """Ask Jev, TypeSafe's System One model, for typed judgments.
 
-One endpoint, one POST: https://api.typesafe.ai/v1/systemone. The key is read
-from ~/.config/typesafe/env (or a TYPESAFE_API_KEY already in the environment)
-and goes on the request object as a header.
+One endpoint, one POST: <base>/v1/systemone. The base is TypeSafe's API unless
+JEV_BASE_URL points at a proxy that serves the same route, such as LiteLLM. The
+key, the base and the default model are read from ~/.config/typesafe/env, and a
+variable already in the environment wins over the file. The key goes on the
+request object as a header.
 
 Do not rewrite this as a `curl -H "Authorization: Bearer $KEY"` wrapper. A
 header passed to curl is an argv element, readable by any `ps` on the machine
@@ -24,14 +26,19 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
 
-API_URL = "https://api.typesafe.ai/v1/systemone"
+DEFAULT_BASE_URL = "https://api.typesafe.ai"
+ENDPOINT_PATH = "/v1/systemone"
 DEFAULT_MODEL = "jev-latest"
 KEY_FILE = Path.home() / ".config" / "typesafe" / "env"
-KEY_LINE = re.compile(r"^\s*(?:export\s+)?TYPESAFE_API_KEY\s*=\s*(.+?)\s*$")
+KEY_VAR = "TYPESAFE_API_KEY"
+BASE_URL_VAR = "JEV_BASE_URL"
+MODEL_VAR = "JEV_MODEL"
+SETTING_LINE = re.compile(r"^\s*(?:export\s+)?([A-Z_][A-Z0-9_]*)\s*=\s*(.+?)\s*$")
 RETRYABLE_STATUS = {429, 502, 503, 504, 529}
 MAX_ATTEMPTS = 4
 QUESTION_TYPES = {"noul", "score", "choice"}
@@ -45,28 +52,58 @@ class JevError(RuntimeError):
     """A safe, user-facing error. Never carries the key."""
 
 
-def read_key() -> tuple[str, str]:
-    """Return (key, source). Environment wins so a one-off export is honoured."""
-    from_env = os.environ.get("TYPESAFE_API_KEY", "").strip()
+def read_setting(name: str) -> tuple[str, str] | None:
+    """Return (value, source) for one setting, or None when it is set nowhere.
+
+    Environment wins so a one-off export is honoured; the env file comes next.
+    """
+    from_env = os.environ.get(name, "").strip()
     if from_env:
         return from_env, "environment"
+    if not KEY_FILE.exists():
+        return None
+    for line in KEY_FILE.read_text().splitlines():
+        match = SETTING_LINE.match(line)
+        if match and match.group(1) == name:
+            value = match.group(2).strip().strip("'\"")
+            if value:
+                return value, str(KEY_FILE)
+    return None
 
+
+def read_key() -> tuple[str, str]:
+    """Return (key, source)."""
+    found = read_setting(KEY_VAR)
+    if found:
+        return found
     if not KEY_FILE.exists():
         raise JevError(
             f"No API key. Write one to {KEY_FILE}:\n"
             f"  mkdir -p {KEY_FILE.parent} && chmod 700 {KEY_FILE.parent}\n"
-            f"  printf 'export TYPESAFE_API_KEY=%s\\n' 'your-key' > {KEY_FILE}"
+            f"  printf 'export {KEY_VAR}=%s\\n' 'your-key' > {KEY_FILE}"
             f" && chmod 600 {KEY_FILE}"
         )
-    for line in KEY_FILE.read_text().splitlines():
-        match = KEY_LINE.match(line)
-        if match:
-            key = match.group(1).strip().strip("'\"")
-            if key:
-                return key, str(KEY_FILE)
-    raise JevError(
-        f"{KEY_FILE} has no TYPESAFE_API_KEY line. Expected: export TYPESAFE_API_KEY=your-key"
-    )
+    raise JevError(f"{KEY_FILE} has no {KEY_VAR} line. Expected: export {KEY_VAR}=your-key")
+
+
+def read_api_url() -> tuple[str, str]:
+    """Return (endpoint URL, source). A base given with or without /v1 both work."""
+    found = read_setting(BASE_URL_VAR)
+    base, source = found if found else (DEFAULT_BASE_URL, "default")
+    base = base.rstrip("/")
+    if base.endswith(ENDPOINT_PATH):
+        base = base[: -len(ENDPOINT_PATH)]
+    elif base.endswith("/v1"):
+        base = base[: -len("/v1")]
+    if not base.startswith(("https://", "http://")):
+        raise JevError(f"{BASE_URL_VAR} must be an http(s) URL, got {base!r} from {source}")
+    return base + ENDPOINT_PATH, source
+
+
+def read_default_model() -> tuple[str, str]:
+    """Return (model, source). Proxies name models by their own aliases."""
+    found = read_setting(MODEL_VAR)
+    return found if found else (DEFAULT_MODEL, "default")
 
 
 def redact(text: str, key: str | None) -> str:
@@ -133,7 +170,7 @@ def reject_unnamed_blob(raw: str) -> None:
 
 
 def validate_questions(questions: Any) -> None:
-    """Catch locally what the API would otherwise reject with a 422."""
+    """Catch locally what the API would otherwise reject with a 400 or 422."""
     if not isinstance(questions, dict) or not questions:
         raise JevError(
             'Questions must be a non-empty object: {"id": {"type": ..., "instructions": ...}}'
@@ -183,13 +220,14 @@ def validate_questions(questions: Any) -> None:
                 )
 
 
-def post(payload: dict[str, Any], key: str, timeout: float) -> dict[str, Any]:
+def post(url: str, payload: dict[str, Any], key: str, timeout: float) -> dict[str, Any]:
     body = json.dumps(payload).encode("utf-8")
+    host = urllib.parse.urlsplit(url).netloc
     last_error: str | None = None
 
     for attempt in range(1, MAX_ATTEMPTS + 1):
         request = urllib.request.Request(
-            API_URL,
+            url,
             data=body,
             method="POST",
             headers={
@@ -204,23 +242,27 @@ def post(payload: dict[str, Any], key: str, timeout: float) -> dict[str, Any]:
                 return json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as error:
             detail = redact(error.read().decode("utf-8", "replace").strip(), key)
-            if error.code == 401:
+            if error.code in (401, 403):
                 raise JevError(
-                    "401 from TypeSafe: the key did not reach the API. Check it is the "
-                    "current key from console.typesafe.ai, then run `key-status` to see "
-                    "which source this script read."
+                    f"{error.code} from {host}: the key was rejected, or it is not allowed to "
+                    f"call model {payload.get('model')!r}. Check the key is current for this "
+                    "endpoint and that a proxy key lists the model, then run `key-status` to "
+                    f"see which sources this script read. {detail}"
                 ) from None
-            if error.code == 422:
-                raise JevError(f"422 from TypeSafe: the request was malformed. {detail}") from None
+            if error.code in (400, 422):
+                # TypeSafe answers a malformed request with 422; LiteLLM with 400.
+                raise JevError(
+                    f"{error.code} from {host}: the request was malformed. {detail}"
+                ) from None
             if error.code not in RETRYABLE_STATUS or attempt == MAX_ATTEMPTS:
-                raise JevError(f"HTTP {error.code} from TypeSafe. {detail}") from None
+                raise JevError(f"HTTP {error.code} from {host}. {detail}") from None
             last_error = f"HTTP {error.code}"
             retry_after = error.headers.get("Retry-After")
             delay = float(retry_after) if retry_after and retry_after.isdigit() else None
         except urllib.error.URLError as error:
             if attempt == MAX_ATTEMPTS:
                 raise JevError(
-                    f"Could not reach {API_URL}: {redact(str(error.reason), key)}"
+                    f"Could not reach {url}: {redact(str(error.reason), key)}"
                 ) from None
             last_error = str(error.reason)
             delay = None
@@ -245,12 +287,34 @@ def make_parser() -> argparse.ArgumentParser:
     )
     ask.add_argument("--questions-file", type=Path, help="Read the questions object from a file")
     ask.add_argument(
-        "--model", default=DEFAULT_MODEL, help="Model to ask; the API requires one"
+        "--model",
+        help=f"Model to ask; defaults to {MODEL_VAR}, else {DEFAULT_MODEL}",
     )
     ask.add_argument("--timeout", type=float, default=60.0)
 
-    sub.add_parser("key-status", help="Report whether a key was found, and from where")
+    sub.add_parser(
+        "key-status",
+        help="Report whether a key was found, and which endpoint and default model are in use",
+    )
     return parser
+
+
+def status() -> dict[str, Any]:
+    """Where each setting came from. Never includes the key itself."""
+    report: dict[str, Any] = {}
+    try:
+        _, source = read_key()
+        report.update(key="found", source=source)
+    except JevError as error:
+        report.update(key="missing", detail=str(error))
+    try:
+        url, url_source = read_api_url()
+        report.update(endpoint=url, endpoint_source=url_source)
+    except JevError as error:
+        report.update(endpoint="invalid", endpoint_detail=str(error))
+    model, model_source = read_default_model()
+    report.update(model=model, model_source=model_source)
+    return report
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -258,21 +322,19 @@ def main(argv: list[str] | None = None) -> int:
     key: str | None = None
     try:
         if args.command == "key-status":
-            try:
-                _, source = read_key()
-                print(json.dumps({"key": "found", "source": source}, ensure_ascii=False))
-            except JevError as error:
-                print(json.dumps({"key": "missing", "detail": str(error)}, ensure_ascii=False))
-                return 1
-            return 0
+            report = status()
+            print(json.dumps(report, ensure_ascii=False))
+            return 0 if report["key"] == "found" and report["endpoint"] != "invalid" else 1
 
         questions = load_json_arg(args.questions, args.questions_file, "questions")
         validate_questions(questions)
         state = build_state(args.state, args.state_file, args.state_format)
         key, _ = read_key()
+        url, _ = read_api_url()
+        model = args.model or read_default_model()[0]
 
-        payload = {"state": state, "model": args.model, "questions": questions}
-        print(json.dumps(post(payload, key, args.timeout), indent=2, ensure_ascii=False))
+        payload = {"state": state, "model": model, "questions": questions}
+        print(json.dumps(post(url, payload, key, args.timeout), indent=2, ensure_ascii=False))
         return 0
     except JevError as error:
         print(json.dumps({"error": redact(str(error), key)}, ensure_ascii=False), file=sys.stderr)

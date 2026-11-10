@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- `jev.py` can reach Jev through a LiteLLM proxy that serves `/v1/systemone`. `JEV_BASE_URL` and `JEV_MODEL` in `~/.config/typesafe/env`, or in the environment, set the endpoint and the default model; without them the script calls TypeSafe with `jev-latest` as before. `TYPESAFE_API_KEY` holds whichever key the endpoint expects.
+- `key-status` reports the endpoint and default model in use and where each came from, still without the key.
+- A 400 reads as a malformed request, as a 422 does, because that is how LiteLLM rejects one. A 401 or 403 names the model, since a proxy key may be valid and still not list it. Error messages name the host that answered.
+- `lean-jev-usage` lists the current requirements; it still described the `evaluate` binary.
+
 ## 0.3.0
 
 - Reading the TypeSafe docs is a precondition rather than a step inside the loop. `ask-jev/SKILL.md` opens with the pages to read before the first call: `concepts/state.md` every time, plus the page for each question type in use. It says plainly that the request contract is not a substitute for them, because a request can satisfy the contract, ignore the pages, and come back as a confident number about the wrong thing with nothing in the response to mark it.
