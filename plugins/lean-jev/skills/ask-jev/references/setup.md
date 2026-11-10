@@ -1,7 +1,8 @@
 # The API key, and what each failure means
 
-`scripts/jev.py` talks to TypeSafe's `POST /v1/systemone` directly over stdlib `urllib` — no
-server to register, no binary to install, nothing to keep updated. Setup is one file.
+`scripts/jev.py` posts to `/v1/systemone` over stdlib `urllib`, on TypeSafe's API or on a LiteLLM
+proxy that serves the same route — no server to register, no binary to install, nothing to keep
+updated. Setup is one file.
 
 This file duplicates the setup section of the plugin `README.md` on purpose: its whole job is to
 be printed in the session where something went wrong, when the reader is not on GitHub. The README
@@ -24,6 +25,23 @@ out of shell profiles, and out of the command line. A `TYPESAFE_API_KEY` already
 environment wins over the file, which is handy for a one-off and worth remembering when an answer
 looks like it came from the wrong account.
 
+### Through a LiteLLM proxy
+
+Add the proxy's base URL and the model alias to the same file, and put the proxy's virtual key in
+`TYPESAFE_API_KEY`:
+
+```bash
+cat >> ~/.config/typesafe/env <<'EOF'
+export JEV_BASE_URL=https://your-litellm-host
+export JEV_MODEL=jev
+EOF
+```
+
+The script appends `/v1/systemone` to `JEV_BASE_URL` (default `https://api.typesafe.ai`) and uses
+`JEV_MODEL` (default `jev-latest`) when a call passes no `--model`. A virtual key may call only the
+models it lists, under the proxy's alias names. Any decision model on the proxy works, including
+OpenAI Decisions models such as `luna-decisions`, which LiteLLM translates.
+
 Never put the key in a command you run in the transcript, and never echo it.
 
 ## Verify
@@ -35,8 +53,8 @@ python3 <plugin-root>/scripts/jev.py ask \
   --questions '{"is_bug": {"type": "noul", "instructions": "Does this report a software defect?"}}'
 ```
 
-`key-status` reports whether a key was found and which source it came from, never the key itself.
-A `noul` near 1 from the second command means the whole path works.
+`key-status` reports whether a key was found and which source it came from, never the key itself,
+along with the endpoint and default model in use and where each came from. A `noul` near 1 from the second command means the whole path works.
 
 ## Troubleshooting
 
@@ -53,18 +71,25 @@ standalone, it sits next to the skill. `ls` the directory before guessing again.
 `~/.config/typesafe/env` is absent or unreadable. Write it as above, and check `ls -l` shows
 `-rw-------` and a non-zero size.
 
-### 401 from TypeSafe
+### 401 or 403
 
-A key was found and the API rejected it. Either it is not a current key — check
-[console.typesafe.ai](https://console.typesafe.ai/) — or a stale `TYPESAFE_API_KEY` in the
-environment is shadowing the file. `key-status` says which source was used.
+A key was found and the endpoint rejected it. Check three things, with `key-status` to see which
+endpoint and sources are in use: the key is current for that endpoint
+([console.typesafe.ai](https://console.typesafe.ai/) for TypeSafe), a proxy key lists the model
+being called, and no stale `TYPESAFE_API_KEY` in the environment is shadowing the file.
 
-### 422 from TypeSafe
+### 400 or 422
 
-The request was malformed and the API says how. Most of these are criteria shapes: a `score` takes
-an ordered array of levels, a `choice` takes a map of option id to description, and a `noul` takes
-an optional map describing its true and false sides. The script checks those locally, so a 422 that
-reaches you is something it does not yet know about — read the `detail` in the message.
+The request was malformed and the API says how; TypeSafe answers with 422 and LiteLLM with 400. Most
+of these are criteria shapes: a `score` takes an ordered array of levels, a `choice` takes a map of
+option id to description, and a `noul` takes an optional map describing its true and false sides.
+The script checks those locally, so one that reaches you is something it does not yet know about —
+read the `detail` in the message.
+
+### `Could not reach …`
+
+The endpoint is down or off your network. Check `JEV_BASE_URL` in `key-status`; an internal proxy
+may need the VPN.
 
 ### The answers look like they came from a different account
 
@@ -73,6 +98,7 @@ reports `"source": "environment"` when that happens; unset it to fall back to th
 
 ## What leaves the machine
 
-Whatever goes in `state`. For source code under a client NDA, that is a decision to make
-deliberately rather than discover later. TypeSafe states it does not train on customer requests;
-zero-data-retention is enterprise-only.
+Whatever goes in `state`, to TypeSafe or through a proxy to the provider behind the chosen model.
+For source code under a client NDA, that is a decision to make deliberately rather than discover
+later. TypeSafe states it does not train on customer requests; zero-data-retention is
+enterprise-only.

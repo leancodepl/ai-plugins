@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+import email.message
 import importlib.util
+import io
 import json
 import tempfile
 import unittest
@@ -42,6 +44,64 @@ class ReadKeyTest(unittest.TestCase):
                 self.assertRaises(jev.JevError),
             ):
                 jev.read_key()
+
+
+class SettingsTest(unittest.TestCase):
+    def settings(self, file_text: str, env: dict[str, str] | None = None):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        key_file = Path(tmp.name) / "env"
+        key_file.write_text(file_text)
+        cleared = {jev.KEY_VAR: "", jev.BASE_URL_VAR: "", jev.MODEL_VAR: ""}
+        patches = [
+            mock.patch.object(jev, "KEY_FILE", key_file),
+            mock.patch.dict("os.environ", {**cleared, **(env or {})}, clear=False),
+        ]
+        for patch in patches:
+            patch.start()
+            self.addCleanup(patch.stop)
+        return key_file
+
+    def test_defaults_to_typesafe_and_jev_latest(self):
+        self.settings("export TYPESAFE_API_KEY=k\n")
+        self.assertEqual(
+            jev.read_api_url(), ("https://api.typesafe.ai/v1/systemone", "default")
+        )
+        self.assertEqual(jev.read_default_model(), ("jev-latest", "default"))
+
+    def test_base_url_and_model_come_from_the_file(self):
+        key_file = self.settings(
+            "export TYPESAFE_API_KEY=k\n"
+            "export JEV_BASE_URL='https://proxy.example/'\n"
+            "JEV_MODEL=jev\n"
+        )
+        self.assertEqual(
+            jev.read_api_url(), ("https://proxy.example/v1/systemone", str(key_file))
+        )
+        self.assertEqual(jev.read_default_model(), ("jev", str(key_file)))
+
+    def test_base_url_may_carry_the_version_or_the_whole_path(self):
+        for base in ("https://proxy.example/v1", "https://proxy.example/v1/systemone"):
+            with self.subTest(base=base):
+                self.settings("", {jev.BASE_URL_VAR: base})
+                self.assertEqual(jev.read_api_url()[0], "https://proxy.example/v1/systemone")
+
+    def test_environment_wins_over_the_file(self):
+        self.settings("JEV_MODEL=jev\n", {jev.MODEL_VAR: "luna-decisions"})
+        self.assertEqual(jev.read_default_model(), ("luna-decisions", "environment"))
+
+    def test_a_base_url_without_a_scheme_is_refused(self):
+        self.settings("JEV_BASE_URL=proxy.example\n")
+        with self.assertRaises(jev.JevError):
+            jev.read_api_url()
+
+    def test_status_reports_sources_but_never_the_key(self):
+        self.settings("export TYPESAFE_API_KEY=sk-secret\nJEV_BASE_URL=https://proxy.example\n")
+        report = jev.status()
+        self.assertEqual(report["key"], "found")
+        self.assertEqual(report["endpoint"], "https://proxy.example/v1/systemone")
+        self.assertEqual(report["model"], "jev-latest")
+        self.assertNotIn("sk-secret", json.dumps(report))
 
 
 class ValidateQuestionsTest(unittest.TestCase):
@@ -190,15 +250,57 @@ class PostTest(unittest.TestCase):
                 return json.dumps({"answers": {}}).encode()
 
         def fake_urlopen(request, timeout=None):
+            captured["url"] = request.full_url
             captured["headers"] = request.headers
             captured["body"] = request.data
             return FakeResponse()
 
+        url = "https://proxy.example/v1/systemone"
         with mock.patch.object(jev.urllib.request, "urlopen", fake_urlopen):
-            jev.post({"state": "x", "model": "jev-latest", "questions": {}}, "sk-secret", 5.0)
+            jev.post(url, {"state": "x", "model": "jev", "questions": {}}, "sk-secret", 5.0)
 
+        self.assertEqual(captured["url"], url)
         self.assertEqual(captured["headers"]["Authorization"], "Bearer sk-secret")
         self.assertNotIn(b"sk-secret", captured["body"])
+
+    def http_error(self, code: int, body: bytes):
+        return jev.urllib.error.HTTPError(
+            "https://proxy.example/v1/systemone",
+            code,
+            "x",
+            email.message.Message(),
+            io.BytesIO(body),
+        )
+
+    def test_a_proxy_400_reads_as_a_malformed_request_without_retrying(self):
+        calls = []
+
+        def fake_urlopen(request, timeout=None):
+            calls.append(1)
+            raise self.http_error(400, b'{"error": "bad criteria"}')
+
+        with mock.patch.object(jev.urllib.request, "urlopen", fake_urlopen):
+            with self.assertRaises(jev.JevError) as caught:
+                jev.post("https://proxy.example/v1/systemone", {"model": "jev"}, "k", 5.0)
+        self.assertEqual(len(calls), 1)
+        self.assertIn("malformed", str(caught.exception))
+        self.assertIn("proxy.example", str(caught.exception))
+
+    def test_a_rejected_key_names_the_model_and_redacts_the_key(self):
+        def fake_urlopen(request, timeout=None):
+            raise self.http_error(401, b"key sk-secret cannot call luna-decisions")
+
+        with mock.patch.object(jev.urllib.request, "urlopen", fake_urlopen):
+            with self.assertRaises(jev.JevError) as caught:
+                jev.post(
+                    "https://proxy.example/v1/systemone",
+                    {"model": "luna-decisions"},
+                    "sk-secret",
+                    5.0,
+                )
+        message = str(caught.exception)
+        self.assertIn("'luna-decisions'", message)
+        self.assertNotIn("sk-secret", message)
 
 
 if __name__ == "__main__":

@@ -80,6 +80,30 @@ revoking it costs nothing else. The script reads the file itself, so the key sta
 configs, out of shell profiles, and off the command line. A `TYPESAFE_API_KEY` already in the
 environment wins over the file.
 
+### Through a LiteLLM proxy
+
+A LiteLLM proxy that serves `POST /v1/systemone` takes the same request, so the script talks to it
+unchanged. Point it there with two more lines in the same file, and put the proxy's virtual key in
+`TYPESAFE_API_KEY`:
+
+```bash
+cat >> ~/.config/typesafe/env <<'EOF'
+export JEV_BASE_URL=https://your-litellm-host
+export JEV_MODEL=jev
+EOF
+```
+
+| Variable | Default | Meaning |
+| -------- | ------- | ------- |
+| `TYPESAFE_API_KEY` | none | Bearer key for whichever endpoint `JEV_BASE_URL` names |
+| `JEV_BASE_URL` | `https://api.typesafe.ai` | Base URL; the script appends `/v1/systemone` |
+| `JEV_MODEL` | `jev-latest` | Model used when a call passes no `--model` |
+
+A proxy names models by its own aliases, and a virtual key may call only the models it lists. Any
+decision model on the proxy works through this route: LiteLLM translates the request for models that
+speak the OpenAI Decisions format, so `--model luna-decisions` needs nothing else. Each variable set
+in the environment wins over the file.
+
 To skip the approval prompt on every call, allow the script in your Claude Code settings:
 
 ```json
@@ -95,8 +119,8 @@ python3 <plugin-root>/scripts/jev.py ask \
   --questions '{"is_bug": {"type": "noul", "instructions": "Does `ticket` report a software defect?"}}'
 ```
 
-`key-status` reports whether a key was found and from where, never the key. A `noul` near 1 from the
-second command means the whole path works.
+`key-status` reports whether a key was found and from where, never the key, along with the endpoint
+and default model in use. A `noul` near 1 from the second command means the whole path works.
 
 State goes in a JSON object whenever it has more than one part, so every part carries a name a
 question can point at with a backticked path. A bare string is for a single indivisible blob such
@@ -110,8 +134,9 @@ string runs long.
 | `python3: can't open file .../scripts/jev.py` | Wrong path, not a broken setup | The script sits at `<plugin-root>/scripts/jev.py`, what `${CLAUDE_PLUGIN_ROOT}` expands to. `ls` the directory |
 | `State is N characters of unnamed text` | Several items were flattened into one string | Put each part in a JSON object under its own key and point questions at them with backticked paths, per [`concepts/state.md`](https://docs.typesafe.ai/concepts/state.md). For a genuine single blob, pass `--state-format text` |
 | `{"key": "missing"}` from `key-status` | No key file | Write `~/.config/typesafe/env` as above; `ls -l` should show `-rw-------` |
-| 401 from TypeSafe | A key was found and rejected | Check it is current at console.typesafe.ai, or a stale `TYPESAFE_API_KEY` in the environment is shadowing the file. `key-status` names the source |
-| 422 from TypeSafe | Malformed request, and the API says how | Usually criteria shapes: `score` takes an ordered array, `choice` takes a map, and a `noul`'s optional criteria are a map too. The script checks those locally |
+| 401 or 403 | A key was found and rejected, or a proxy key may not call that model | Check the key is current for the endpoint `key-status` shows (console.typesafe.ai for TypeSafe), that a proxy key lists the model, and that no stale `TYPESAFE_API_KEY` in the environment is shadowing the file |
+| 400 or 422 | Malformed request, and the API says how | Usually criteria shapes: `score` takes an ordered array, `choice` takes a map, and a `noul`'s optional criteria are a map too. The script checks those locally |
+| `Could not reach …` | The endpoint is down or off your network | Check `JEV_BASE_URL`; an internal proxy may need the VPN |
 | Answers look like another account's | `TYPESAFE_API_KEY` set in the environment | Unset it to fall back to the file |
 
 The same table lives in [`skills/ask-jev/references/setup.md`](skills/ask-jev/references/setup.md),
@@ -124,7 +149,9 @@ tokens of state costs well under a cent. Keys are per-seat, so usage is attribut
 
 ## What leaves the machine
 
-Whatever goes in `state`: the diff, the test, the ticket, the file. It goes to TypeSafe's API.
+Whatever goes in `state`: the diff, the test, the ticket, the file. It goes to TypeSafe's API, or
+through the proxy `JEV_BASE_URL` names to the provider behind the chosen model. A proxy may also log
+requests and their spend, depending on how it is configured.
 
 Their docs say customer requests are not used for training, and zero-data-retention is
 enterprise-only. For code under an NDA that is a decision to make deliberately, and the skill
@@ -133,7 +160,7 @@ material to a third party by design.
 
 ## Why a script and not an MCP server
 
-The API is one endpoint: `POST https://api.typesafe.ai/v1/systemone`, a Bearer key, a JSON body of
+The API is one endpoint: `POST <base>/v1/systemone`, a Bearer key, a JSON body of
 `{state, model, questions}`, JSON back. An earlier version of this plugin leaned on a community MCP
 server that wrapped exactly that in 1290 lines of Go, a self-updater and a release-provenance chain.
 
